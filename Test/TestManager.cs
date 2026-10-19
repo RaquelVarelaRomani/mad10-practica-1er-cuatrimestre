@@ -1,6 +1,7 @@
-﻿using Ninject;
+using Ninject;
 using System.Configuration;
 using System.Data.Entity;
+using Es.Udc.DotNet.PracticaMAD.Model;
 
 namespace Es.Udc.DotNet.PracticaMAD.Test
 {
@@ -27,10 +28,10 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             #endregion
 
             string connectionString =
-                ConfigurationManager.ConnectionStrings["COPY_HERE_YOUR_CONNECTION_STRING"].ConnectionString;
+                ConfigurationManager.ConnectionStrings["PracticaMADEntities"].ConnectionString;
 
             kernel.Bind<DbContext>().
-                ToSelf().
+                To<PracticaMADEntities>().
                 InSingletonScope().
                 WithConstructorArgument("nameOrConnectionString", connectionString);
 
