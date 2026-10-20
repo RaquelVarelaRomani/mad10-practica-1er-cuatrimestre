@@ -1,10 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model
 {
-    public class Comment
+    [Table("Comment")]
+    public partial class Comment
     {
+        public Comment()
+        {
+            this.CommentReports = new HashSet<CommentReport>();
+            this.Tags = new HashSet<Tag>();
+        }
+
+        [Key]
         public long commentId { get; set; }
         public long productId { get; set; }
         public long userId { get; set; }
@@ -17,27 +27,32 @@ namespace Es.Udc.DotNet.PracticaMAD.Model
         public virtual ICollection<CommentReport> CommentReports { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
 
-        public Comment()
-        {
-            CommentReports = new HashSet<CommentReport>();
-            Tags = new HashSet<Tag>();
-        }
-
         public override bool Equals(object obj)
         {
-            var other = obj as Comment;
-            if (other == null) return false;
-            return commentId == other.commentId;
+            Comment target = obj as Comment;
+            if (target == null)
+            {
+                return false;
+            }
+
+            return (this.commentId == target.commentId)
+                && (this.productId == target.productId)
+                && (this.userId == target.userId)
+                && (this.commentText == target.commentText)
+                && (this.commentDate == target.commentDate)
+                && (this.isInReview == target.isInReview);
         }
 
         public override int GetHashCode()
         {
-            return commentId.GetHashCode();
+            return this.commentId.GetHashCode();
         }
 
         public override string ToString()
         {
-            return $"Comment [commentId={commentId}, productId={productId}, userId={userId}, isInReview={isInReview}, commentDate={commentDate}]";
+            return String.Format(
+                "[ commentId = {0} | productId = {1} | userId = {2} | commentText = {3} | commentDate = {4} | isInReview = {5} ]",
+                this.commentId, this.productId, this.userId, this.commentText, this.commentDate, this.isInReview);
         }
     }
 }

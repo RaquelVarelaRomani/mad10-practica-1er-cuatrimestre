@@ -1,4 +1,5 @@
 using System;
+using Es.Udc.DotNet.ModelUtil.Exceptions;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.Exceptions
 {
@@ -6,14 +7,14 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.Exceptions
     /// Excepcion lanzada cuando un vendedor intenta autovalorarse en uno de sus productos.
     /// </summary>
     [Serializable]
-    public class SelfRatingException : Exception
+    public class SelfRatingException : ModelException
     {
         public long UserId { get; private set; }
 
         public SelfRatingException(long userId)
-            : base($"El usuario con ID {userId} no puede valorarse a si mismo.")
+            : base(String.Format("El usuario con ID {0} no puede valorarse a si mismo.", userId))
         {
-            UserId = userId;
+            this.UserId = userId;
         }
     }
 }

@@ -1,9 +1,13 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model
 {
-    public class CommentReport
+    [Table("CommentReport")]
+    public partial class CommentReport
     {
+        [Key]
         public long reportId { get; set; }
         public long commentId { get; set; }
         public long userId { get; set; }
@@ -15,19 +19,29 @@ namespace Es.Udc.DotNet.PracticaMAD.Model
 
         public override bool Equals(object obj)
         {
-            var other = obj as CommentReport;
-            if (other == null) return false;
-            return reportId == other.reportId || (commentId == other.commentId && userId == other.userId);
+            CommentReport target = obj as CommentReport;
+            if (target == null)
+            {
+                return false;
+            }
+
+            return (this.reportId == target.reportId)
+                && (this.commentId == target.commentId)
+                && (this.userId == target.userId)
+                && (this.reason == target.reason)
+                && (this.reportDate == target.reportDate);
         }
 
         public override int GetHashCode()
         {
-            return reportId != 0 ? reportId.GetHashCode() : (commentId.GetHashCode() ^ userId.GetHashCode());
+            return this.reportId.GetHashCode();
         }
 
         public override string ToString()
         {
-            return $"CommentReport [reportId={reportId}, commentId={commentId}, userId={userId}, reason={reason}]";
+            return String.Format(
+                "[ reportId = {0} | commentId = {1} | userId = {2} | reason = {3} | reportDate = {4} ]",
+                this.reportId, this.commentId, this.userId, this.reason, this.reportDate);
         }
     }
 }

@@ -1,16 +1,26 @@
 using System.Collections.Generic;
 using Es.Udc.DotNet.ModelUtil.Dao;
+using Es.Udc.DotNet.ModelUtil.Exceptions;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.CommentReportDao
 {
     public interface ICommentReportDao : IGenericDao<CommentReport, long>
     {
         /// <summary>
-        /// Busca si existe ya un reporte emitido por un usuario sobre un comentario concreto.
+        /// Comprueba si existe ya un reporte emitido por un usuario sobre un comentario concreto.
         /// </summary>
         /// <param name="commentId">Identificador del comentario.</param>
         /// <param name="userId">Identificador del usuario.</param>
-        /// <returns>El reporte si existe, o null en caso contrario.</returns>
+        /// <returns>true si ya existe el reporte; false en caso contrario.</returns>
+        bool ExistsByCommentAndUser(long commentId, long userId);
+
+        /// <summary>
+        /// Busca un reporte emitido por un usuario sobre un comentario concreto.
+        /// </summary>
+        /// <param name="commentId">Identificador del comentario.</param>
+        /// <param name="userId">Identificador del usuario.</param>
+        /// <returns>El reporte correspondiente.</returns>
+        /// <exception cref="InstanceNotFoundException"/>
         CommentReport FindByCommentAndUser(long commentId, long userId);
 
         /// <summary>

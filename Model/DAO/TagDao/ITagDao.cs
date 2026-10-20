@@ -7,10 +7,18 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
     public interface ITagDao : IGenericDao<Tag, long>
     {
         /// <summary>
+        /// Comprueba si existe una etiqueta con el nombre indicado (case-insensitive).
+        /// </summary>
+        /// <param name="tagName">Nombre de la etiqueta.</param>
+        /// <returns>true si existe; false en caso contrario.</returns>
+        bool ExistsByName(string tagName);
+
+        /// <summary>
         /// Busca una etiqueta por su nombre exacto (case-insensitive).
         /// </summary>
         /// <param name="tagName">Nombre de la etiqueta.</param>
-        /// <returns>La etiqueta encontrada o null si no existe.</returns>
+        /// <returns>La etiqueta encontrada.</returns>
+        /// <exception cref="InstanceNotFoundException"/>
         Tag FindByName(string tagName);
 
         /// <summary>

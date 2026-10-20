@@ -1,4 +1,5 @@
 using System;
+using Es.Udc.DotNet.ModelUtil.Exceptions;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.Exceptions
 {
@@ -6,16 +7,16 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.Exceptions
     /// Excepcion lanzada cuando un usuario intenta reportar un comentario que ya ha reportado previamente.
     /// </summary>
     [Serializable]
-    public class AlreadyReportedException : Exception
+    public class AlreadyReportedException : ModelException
     {
         public long CommentId { get; private set; }
         public long UserId { get; private set; }
 
         public AlreadyReportedException(long commentId, long userId)
-            : base($"El usuario con ID {userId} ya ha reportado el comentario con ID {commentId}.")
+            : base(String.Format("El usuario con ID {0} ya ha reportado el comentario con ID {1}.", userId, commentId))
         {
-            CommentId = commentId;
-            UserId = userId;
+            this.CommentId = commentId;
+            this.UserId = userId;
         }
     }
 }

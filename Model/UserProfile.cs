@@ -1,10 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model
 {
-    public class UserProfile
+    [Table("UserProfile")]
+    public partial class UserProfile
     {
+        public UserProfile()
+        {
+            this.Products = new HashSet<Product>();
+            this.Comments = new HashSet<Comment>();
+            this.CommentReports = new HashSet<CommentReport>();
+            this.ReceivedRatings = new HashSet<SellerRating>();
+            this.GivenRatings = new HashSet<SellerRating>();
+        }
+
+        [Key]
         public long usrId { get; set; }
         public string loginName { get; set; }
         public string enPassword { get; set; }
@@ -20,30 +33,34 @@ namespace Es.Udc.DotNet.PracticaMAD.Model
         public virtual ICollection<SellerRating> ReceivedRatings { get; set; }
         public virtual ICollection<SellerRating> GivenRatings { get; set; }
 
-        public UserProfile()
-        {
-            Products = new HashSet<Product>();
-            Comments = new HashSet<Comment>();
-            CommentReports = new HashSet<CommentReport>();
-            ReceivedRatings = new HashSet<SellerRating>();
-            GivenRatings = new HashSet<SellerRating>();
-        }
-
         public override bool Equals(object obj)
         {
-            var other = obj as UserProfile;
-            if (other == null) return false;
-            return usrId == other.usrId || (loginName != null && loginName == other.loginName);
+            UserProfile target = obj as UserProfile;
+            if (target == null)
+            {
+                return false;
+            }
+
+            return (this.usrId == target.usrId)
+                && (this.loginName == target.loginName)
+                && (this.enPassword == target.enPassword)
+                && (this.firstName == target.firstName)
+                && (this.lastName == target.lastName)
+                && (this.email == target.email)
+                && (this.language == target.language)
+                && (this.country == target.country);
         }
 
         public override int GetHashCode()
         {
-            return loginName != null ? loginName.GetHashCode() : usrId.GetHashCode();
+            return this.usrId.GetHashCode();
         }
 
         public override string ToString()
         {
-            return $"UserProfile [usrId={usrId}, loginName={loginName}, firstName={firstName}, lastName={lastName}, email={email}]";
+            return String.Format(
+                "[ usrId = {0} | loginName = {1} | enPassword = {2} | firstName = {3} | lastName = {4} | email = {5} | language = {6} | country = {7} ]",
+                this.usrId, this.loginName, this.enPassword, this.firstName, this.lastName, this.email, this.language, this.country);
         }
     }
 }

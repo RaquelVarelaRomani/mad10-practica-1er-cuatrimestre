@@ -1,9 +1,13 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model
 {
-    public class SellerRating
+    [Table("SellerRating")]
+    public partial class SellerRating
     {
+        [Key]
         public long ratingId { get; set; }
         public long sellerId { get; set; }
         public long productId { get; set; }
@@ -18,19 +22,31 @@ namespace Es.Udc.DotNet.PracticaMAD.Model
 
         public override bool Equals(object obj)
         {
-            var other = obj as SellerRating;
-            if (other == null) return false;
-            return ratingId == other.ratingId;
+            SellerRating target = obj as SellerRating;
+            if (target == null)
+            {
+                return false;
+            }
+
+            return (this.ratingId == target.ratingId)
+                && (this.sellerId == target.sellerId)
+                && (this.productId == target.productId)
+                && (this.buyerUserId == target.buyerUserId)
+                && (this.score == target.score)
+                && (this.comment == target.comment)
+                && (this.ratingDate == target.ratingDate);
         }
 
         public override int GetHashCode()
         {
-            return ratingId.GetHashCode();
+            return this.ratingId.GetHashCode();
         }
 
         public override string ToString()
         {
-            return $"SellerRating [ratingId={ratingId}, sellerId={sellerId}, productId={productId}, buyerUserId={buyerUserId}, score={score}]";
+            return String.Format(
+                "[ ratingId = {0} | sellerId = {1} | productId = {2} | buyerUserId = {3} | score = {4} | comment = {5} | ratingDate = {6} ]",
+                this.ratingId, this.sellerId, this.productId, this.buyerUserId, this.score, this.comment, this.ratingDate);
         }
     }
 }

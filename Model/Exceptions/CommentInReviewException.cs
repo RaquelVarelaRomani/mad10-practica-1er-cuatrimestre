@@ -1,4 +1,5 @@
 using System;
+using Es.Udc.DotNet.ModelUtil.Exceptions;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.Exceptions
 {
@@ -6,14 +7,14 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.Exceptions
     /// Excepcion lanzada cuando se intenta modificar un comentario que se encuentra en revision.
     /// </summary>
     [Serializable]
-    public class CommentInReviewException : Exception
+    public class CommentInReviewException : ModelException
     {
         public long CommentId { get; private set; }
 
         public CommentInReviewException(long commentId)
-            : base($"El comentario con ID {commentId} esta en revision y no puede ser modificado.")
+            : base(String.Format("El comentario con ID {0} esta en revision y no puede ser modificado.", commentId))
         {
-            CommentId = commentId;
+            this.CommentId = commentId;
         }
     }
 }

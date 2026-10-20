@@ -11,38 +11,46 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.CommentDao
         {
             DbSet<Comment> comments = Context.Set<Comment>();
 
-            return comments
-                .Where(c => c.productId == productId)
-                .OrderByDescending(c => c.commentDate)
-                .Skip(startIndex)
-                .Take(count)
-                .ToList();
+            var result = (from c in comments
+                          where c.productId == productId
+                          orderby c.commentDate descending
+                          select c).Skip(startIndex).Take(count).ToList();
+
+            return result;
         }
 
         public int GetNumberOfCommentsByProduct(long productId)
         {
             DbSet<Comment> comments = Context.Set<Comment>();
 
-            return comments.Count(c => c.productId == productId);
+            int result = (from c in comments
+                          where c.productId == productId
+                          select c).Count();
+
+            return result;
         }
 
         public List<Comment> FindByTagId(long tagId, int startIndex, int count)
         {
             DbSet<Comment> comments = Context.Set<Comment>();
 
-            return comments
-                .Where(c => c.Tags.Any(t => t.tagId == tagId))
-                .OrderByDescending(c => c.commentDate)
-                .Skip(startIndex)
-                .Take(count)
-                .ToList();
+            var result = (from c in comments
+                          where c.Tags.Any(t => t.tagId == tagId)
+                          orderby c.commentDate descending
+                          select c).Skip(startIndex).Take(count).ToList();
+
+            return result;
         }
 
         public int GetNumberOfCommentsByTag(long tagId)
         {
             DbSet<Comment> comments = Context.Set<Comment>();
 
-            return comments.Count(c => c.Tags.Any(t => t.tagId == tagId));
+            int result = (from c in comments
+                          where c.Tags.Any(t => t.tagId == tagId)
+                          select c).Count();
+
+            return result;
         }
     }
 }

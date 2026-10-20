@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -12,57 +11,41 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.ProductDao
         {
             DbSet<Product> products = Context.Set<Product>();
 
-            var query = products.AsQueryable();
+            string lowerKeyword = string.IsNullOrWhiteSpace(keyword) ? string.Empty : keyword.Trim().ToLower();
 
-            if (!string.IsNullOrWhiteSpace(keyword))
-            {
-                string lowerKeyword = keyword.Trim().ToLower();
-                query = query.Where(p => p.productName.ToLower().Contains(lowerKeyword));
-            }
+            var result = (from p in products
+                          where (lowerKeyword == string.Empty || p.productName.ToLower().Contains(lowerKeyword))
+                             && (!categoryId.HasValue || categoryId.Value <= 0 || p.categoryId == categoryId.Value)
+                          orderby p.creationDate descending, p.productName ascending
+                          select p).Skip(startIndex).Take(count).ToList();
 
-            if (categoryId.HasValue && categoryId.Value > 0)
-            {
-                query = query.Where(p => p.categoryId == categoryId.Value);
-            }
-
-            return query
-                .OrderByDescending(p => p.creationDate)
-                .ThenBy(p => p.productName)
-                .Skip(startIndex)
-                .Take(count)
-                .ToList();
+            return result;
         }
 
         public int GetNumberOfProductsByKeywords(string keyword, long? categoryId)
         {
             DbSet<Product> products = Context.Set<Product>();
 
-            var query = products.AsQueryable();
+            string lowerKeyword = string.IsNullOrWhiteSpace(keyword) ? string.Empty : keyword.Trim().ToLower();
 
-            if (!string.IsNullOrWhiteSpace(keyword))
-            {
-                string lowerKeyword = keyword.Trim().ToLower();
-                query = query.Where(p => p.productName.ToLower().Contains(lowerKeyword));
-            }
+            int result = (from p in products
+                          where (lowerKeyword == string.Empty || p.productName.ToLower().Contains(lowerKeyword))
+                             && (!categoryId.HasValue || categoryId.Value <= 0 || p.categoryId == categoryId.Value)
+                          select p).Count();
 
-            if (categoryId.HasValue && categoryId.Value > 0)
-            {
-                query = query.Where(p => p.categoryId == categoryId.Value);
-            }
-
-            return query.Count();
+            return result;
         }
 
         public List<Product> FindBySellerId(long sellerId, int startIndex, int count)
         {
             DbSet<Product> products = Context.Set<Product>();
 
-            return products
-                .Where(p => p.sellerId == sellerId)
-                .OrderByDescending(p => p.creationDate)
-                .Skip(startIndex)
-                .Take(count)
-                .ToList();
+            var result = (from p in products
+                          where p.sellerId == sellerId
+                          orderby p.creationDate descending
+                          select p).Skip(startIndex).Take(count).ToList();
+
+            return result;
         }
     }
 }

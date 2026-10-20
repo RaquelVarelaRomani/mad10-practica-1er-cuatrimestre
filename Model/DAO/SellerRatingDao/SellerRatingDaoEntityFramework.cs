@@ -11,26 +11,32 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SellerRatingDao
         {
             DbSet<SellerRating> ratings = Context.Set<SellerRating>();
 
-            return ratings
-                .Where(r => r.sellerId == sellerId)
-                .OrderByDescending(r => r.ratingDate)
-                .Skip(startIndex)
-                .Take(count)
-                .ToList();
+            var result = (from r in ratings
+                          where r.sellerId == sellerId
+                          orderby r.ratingDate descending
+                          select r).Skip(startIndex).Take(count).ToList();
+
+            return result;
         }
 
         public int GetNumberOfRatingsBySeller(long sellerId)
         {
             DbSet<SellerRating> ratings = Context.Set<SellerRating>();
 
-            return ratings.Count(r => r.sellerId == sellerId);
+            int result = (from r in ratings
+                          where r.sellerId == sellerId
+                          select r).Count();
+
+            return result;
         }
 
         public double GetAverageRatingBySeller(long sellerId)
         {
             DbSet<SellerRating> ratings = Context.Set<SellerRating>();
 
-            var sellerRatings = ratings.Where(r => r.sellerId == sellerId);
+            var sellerRatings = (from r in ratings
+                                 where r.sellerId == sellerId
+                                 select r);
 
             if (!sellerRatings.Any())
             {

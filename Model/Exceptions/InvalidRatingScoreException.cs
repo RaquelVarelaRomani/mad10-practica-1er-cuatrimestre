@@ -1,4 +1,5 @@
 using System;
+using Es.Udc.DotNet.ModelUtil.Exceptions;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.Exceptions
 {
@@ -6,14 +7,14 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.Exceptions
     /// Excepcion lanzada cuando se proporciona una puntuacion de valoracion fuera del rango permitido (1 a 5).
     /// </summary>
     [Serializable]
-    public class InvalidRatingScoreException : Exception
+    public class InvalidRatingScoreException : ModelException
     {
         public int Score { get; private set; }
 
         public InvalidRatingScoreException(int score)
-            : base($"La puntuacion {score} no es valida. Debe estar comprendida entre 1 y 5.")
+            : base(String.Format("La puntuacion {0} no es valida. Debe estar comprendida entre 1 y 5.", score))
         {
-            Score = score;
+            this.Score = score;
         }
     }
 }
