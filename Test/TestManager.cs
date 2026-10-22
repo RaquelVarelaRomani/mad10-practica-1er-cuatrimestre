@@ -2,6 +2,13 @@ using Ninject;
 using System.Configuration;
 using System.Data.Entity;
 using Es.Udc.DotNet.PracticaMAD.Model;
+using Es.Udc.DotNet.PracticaMAD.Model.CategoryDao;
+using Es.Udc.DotNet.PracticaMAD.Model.CommentDao;
+using Es.Udc.DotNet.PracticaMAD.Model.CommentReportDao;
+using Es.Udc.DotNet.PracticaMAD.Model.ProductDao;
+using Es.Udc.DotNet.PracticaMAD.Model.SellerRatingDao;
+using Es.Udc.DotNet.PracticaMAD.Model.TagDao;
+using Es.Udc.DotNet.PracticaMAD.Model.UserProfileDao;
 
 namespace Es.Udc.DotNet.PracticaMAD.Test
 {
@@ -19,25 +26,26 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
 
             #region PracticaMAD Bindings
 
-            /* 
-             * kernel.Bind<IUserProfileDao>().To<UserProfileDaoEntityFramework>();
-             * 
-             * kernel.Bind<IUserService>().To<UserService>();
-             */
+            kernel.Bind<IUserProfileDao>().To<UserProfileDaoEntityFramework>();
+            kernel.Bind<ICategoryDao>().To<CategoryDaoEntityFramework>();
+            kernel.Bind<IProductDao>().To<ProductDaoEntityFramework>();
+            kernel.Bind<ICommentDao>().To<CommentDaoEntityFramework>();
+            kernel.Bind<ICommentReportDao>().To<CommentReportDaoEntityFramework>();
+            kernel.Bind<ISellerRatingDao>().To<SellerRatingDaoEntityFramework>();
+            kernel.Bind<ITagDao>().To<TagDaoEntityFramework>();
 
             #endregion
 
             string connectionString =
-                ConfigurationManager.ConnectionStrings["PracticaMADEntities"].ConnectionString;
+                ConfigurationManager.ConnectionStrings["PracticaMADModelEntities"].ConnectionString;
 
             kernel.Bind<DbContext>().
-                To<PracticaMADEntities>().
+                To<PracticaMADModelEntities>().
                 InSingletonScope().
                 WithConstructorArgument("nameOrConnectionString", connectionString);
 
             return kernel;
         }
-
 
         public static void ClearNInjectKernel(IKernel kernel)
         {

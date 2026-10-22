@@ -107,9 +107,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Category.cs" />
-    <Compile Include="Comment.cs" />
-    <Compile Include="CommentReport.cs" />
+    <Compile Include="Category.cs">
+      <DependentUpon>PracticaMADModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Comment.cs">
+      <DependentUpon>PracticaMADModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommentReport.cs">
+      <DependentUpon>PracticaMADModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAO\CategoryDao\CategoryDaoEntityFramework.cs" />
     <Compile Include="DAO\CategoryDao\ICategoryDao.cs" />
     <Compile Include="DAO\CommentDao\CommentDaoEntityFramework.cs" />
@@ -130,18 +136,49 @@
     <Compile Include="Exceptions\InvalidRatingScoreException.cs" />
     <Compile Include="Exceptions\NotCommentAuthorException.cs" />
     <Compile Include="Exceptions\SelfRatingException.cs" />
-    <Compile Include="PracticaMADEntities.cs" />
-    <Compile Include="Product.cs" />
+    <Compile Include="Domain\EntitiesCustom.cs" />
+    <Compile Include="PracticaMADModelEntitiesExtensions.cs" />
+    <Compile Include="PracticaMADModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PracticaMADModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PracticaMADModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PracticaMADModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PracticaMADModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PracticaMADModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Product.cs">
+      <DependentUpon>PracticaMADModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SellerRating.cs" />
-    <Compile Include="Tag.cs" />
-    <Compile Include="UserProfile.cs" />
+    <Compile Include="SellerRating.cs">
+      <DependentUpon>PracticaMADModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tag.cs">
+      <DependentUpon>PracticaMADModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile.cs">
+      <DependentUpon>PracticaMADModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <EntityDeploy Include="PracticaMADModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PracticaMADModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="PracticaMADModel.edmx.diagram">
+      <DependentUpon>PracticaMADModel.edmx</DependentUpon>
+    </None>
     <None Include="SQL\SqlServerCreateTables.sql">
       <SubType>Designer</SubType>
     </None>
@@ -183,6 +220,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PracticaMADModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PracticaMADModel.edmx</DependentUpon>
+      <LastGenOutput>PracticaMADModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="PracticaMADModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PracticaMADModel.edmx</DependentUpon>
+      <LastGenOutput>PracticaMADModel.cs</LastGenOutput>
+    </Content>
     <Content Include="SQL\SqlServerCreateDatabase.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -190,7 +237,6 @@
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.11.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DAO\" />
     <Folder Include="SERVICES\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

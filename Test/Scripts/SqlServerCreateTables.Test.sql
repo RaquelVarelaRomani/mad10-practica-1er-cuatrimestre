@@ -5,9 +5,6 @@
  * Base de datos: PracticaMAD_test
  */
 
-DECLARE @Default_DB_Path as VARCHAR(255)  
-SET @Default_DB_Path = N'C:\SourceCode.SVN\DataBase\'
-
 USE [master]
 GO
 
@@ -19,18 +16,10 @@ BEGIN
 END
 GO
 
-USE [master]
+/* DataBase Creation */
+CREATE DATABASE [PracticaMAD_test]
 GO
 
-/* DataBase Creation */
-DECLARE @sql nvarchar(1000)
-
-SET @sql = 
-  N'CREATE DATABASE [PracticaMAD_test] 
-    ON PRIMARY ( NAME = PracticaMAD_test, FILENAME = ''' + @Default_DB_Path + N'PracticaMAD_test.mdf'')
-    LOG ON ( NAME = PracticaMAD_test_log, FILENAME = ''' + @Default_DB_Path + N'PracticaMAD_test_log.ldf'')'
-
-EXEC(@sql)
 PRINT N'Database [PracticaMAD_test] created.'
 GO
 

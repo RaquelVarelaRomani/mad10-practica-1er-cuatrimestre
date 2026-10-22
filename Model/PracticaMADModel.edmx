@@ -1,0 +1,660 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Es.Udc.DotNet.PracticaMAD.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="categoryId" />
+          </Key>
+          <Property Name="categoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="categoryName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="commentId" />
+          </Key>
+          <Property Name="commentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="productId" Type="bigint" Nullable="false" />
+          <Property Name="userId" Type="bigint" Nullable="false" />
+          <Property Name="commentText" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="commentDate" Type="datetime" Nullable="false" />
+          <Property Name="isInReview" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommentReport">
+          <Key>
+            <PropertyRef Name="reportId" />
+          </Key>
+          <Property Name="reportId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="commentId" Type="bigint" Nullable="false" />
+          <Property Name="userId" Type="bigint" Nullable="false" />
+          <Property Name="reason" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="reportDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommentTag">
+          <Key>
+            <PropertyRef Name="commentId" />
+            <PropertyRef Name="tagId" />
+          </Key>
+          <Property Name="commentId" Type="bigint" Nullable="false" />
+          <Property Name="tagId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="productId" />
+          </Key>
+          <Property Name="productId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="productName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="creationDate" Type="datetime" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="1000" />
+          <Property Name="image" Type="varchar" MaxLength="255" />
+          <Property Name="categoryId" Type="bigint" Nullable="false" />
+          <Property Name="sellerId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SellerRating">
+          <Key>
+            <PropertyRef Name="ratingId" />
+          </Key>
+          <Property Name="ratingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sellerId" Type="bigint" Nullable="false" />
+          <Property Name="productId" Type="bigint" Nullable="false" />
+          <Property Name="buyerUserId" Type="bigint" Nullable="false" />
+          <Property Name="score" Type="int" Nullable="false" />
+          <Property Name="comment" Type="varchar" MaxLength="1000" />
+          <Property Name="ratingDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="tagId" />
+          </Key>
+          <Property Name="tagId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tagName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="usrId" />
+          </Key>
+          <Property Name="usrId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="loginName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="enPassword" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="firstName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="lastName" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="language" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="country" Type="varchar" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Comment_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="productId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentReport_Comment">
+          <End Role="Comment" Type="Self.Comment" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CommentReport" Type="Self.CommentReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="commentId" />
+            </Principal>
+            <Dependent Role="CommentReport">
+              <PropertyRef Name="commentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentReport_User">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="CommentReport" Type="Self.CommentReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="CommentReport">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentTag_Comment">
+          <End Role="Comment" Type="Self.Comment" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CommentTag" Type="Self.CommentTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="commentId" />
+            </Principal>
+            <Dependent Role="CommentTag">
+              <PropertyRef Name="commentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentTag_Tag">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CommentTag" Type="Self.CommentTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="tagId" />
+            </Principal>
+            <Dependent Role="CommentTag">
+              <PropertyRef Name="tagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="categoryId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Seller">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="sellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SellerRating_Buyer">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="SellerRating" Type="Self.SellerRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="SellerRating">
+              <PropertyRef Name="buyerUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SellerRating_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="SellerRating" Type="Self.SellerRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="productId" />
+            </Principal>
+            <Dependent Role="SellerRating">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SellerRating_Seller">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="SellerRating" Type="Self.SellerRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="SellerRating">
+              <PropertyRef Name="sellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EsUdcDotNetPracticaMADModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommentReport" EntityType="Self.CommentReport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommentTag" EntityType="Self.CommentTag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SellerRating" EntityType="Self.SellerRating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Comment_Product" Association="Self.FK_Comment_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User" Association="Self.FK_Comment_User">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentReport_Comment" Association="Self.FK_CommentReport_Comment">
+            <End Role="Comment" EntitySet="Comment" />
+            <End Role="CommentReport" EntitySet="CommentReport" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentReport_User" Association="Self.FK_CommentReport_User">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="CommentReport" EntitySet="CommentReport" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentTag_Comment" Association="Self.FK_CommentTag_Comment">
+            <End Role="Comment" EntitySet="Comment" />
+            <End Role="CommentTag" EntitySet="CommentTag" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentTag_Tag" Association="Self.FK_CommentTag_Tag">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="CommentTag" EntitySet="CommentTag" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Seller" Association="Self.FK_Product_Seller">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SellerRating_Buyer" Association="Self.FK_SellerRating_Buyer">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="SellerRating" EntitySet="SellerRating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SellerRating_Product" Association="Self.FK_SellerRating_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="SellerRating" EntitySet="SellerRating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SellerRating_Seller" Association="Self.FK_SellerRating_Seller">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="SellerRating" EntitySet="SellerRating" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Es.Udc.DotNet.PracticaMAD.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="categoryId" />
+          </Key>
+          <Property Name="categoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="categoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Category" FromRole="Category" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="commentId" />
+          </Key>
+          <Property Name="commentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="productId" Type="Int64" Nullable="false" />
+          <Property Name="userId" Type="Int64" Nullable="false" />
+          <Property Name="commentText" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="commentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="isInReview" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Comment_Product" FromRole="Comment" ToRole="Product" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.FK_Comment_User" FromRole="Comment" ToRole="UserProfile" />
+          <NavigationProperty Name="CommentReports" Relationship="Self.FK_CommentReport_Comment" FromRole="Comment" ToRole="CommentReport" />
+          <NavigationProperty Name="Tags" Relationship="Self.CommentTag" FromRole="Comment" ToRole="Tag" />
+        </EntityType>
+        <EntityType Name="CommentReport">
+          <Key>
+            <PropertyRef Name="reportId" />
+          </Key>
+          <Property Name="reportId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="commentId" Type="Int64" Nullable="false" />
+          <Property Name="userId" Type="Int64" Nullable="false" />
+          <Property Name="reason" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="reportDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK_CommentReport_Comment" FromRole="CommentReport" ToRole="Comment" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.FK_CommentReport_User" FromRole="CommentReport" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="productId" />
+          </Key>
+          <Property Name="productId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="productName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="image" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="categoryId" Type="Int64" Nullable="false" />
+          <Property Name="sellerId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Product_Category" FromRole="Product" ToRole="Category" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Product" FromRole="Product" ToRole="Comment" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.FK_Product_Seller" FromRole="Product" ToRole="UserProfile" />
+          <NavigationProperty Name="SellerRatings" Relationship="Self.FK_SellerRating_Product" FromRole="Product" ToRole="SellerRating" />
+        </EntityType>
+        <EntityType Name="SellerRating">
+          <Key>
+            <PropertyRef Name="ratingId" />
+          </Key>
+          <Property Name="ratingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sellerId" Type="Int64" Nullable="false" />
+          <Property Name="productId" Type="Int64" Nullable="false" />
+          <Property Name="buyerUserId" Type="Int64" Nullable="false" />
+          <Property Name="score" Type="Int32" Nullable="false" />
+          <Property Name="comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="ratingDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_SellerRating_Product" FromRole="SellerRating" ToRole="Product" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.FK_SellerRating_Buyer" FromRole="SellerRating" ToRole="UserProfile" />
+          <NavigationProperty Name="UserProfile1" Relationship="Self.FK_SellerRating_Seller" FromRole="SellerRating" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="tagId" />
+          </Key>
+          <Property Name="tagId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tagName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="Self.CommentTag" FromRole="Tag" ToRole="Comment" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="usrId" />
+          </Key>
+          <Property Name="usrId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="loginName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="enPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="firstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="language" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="country" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_User" FromRole="UserProfile" ToRole="Comment" />
+          <NavigationProperty Name="CommentReports" Relationship="Self.FK_CommentReport_User" FromRole="UserProfile" ToRole="CommentReport" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Seller" FromRole="UserProfile" ToRole="Product" />
+          <NavigationProperty Name="SellerRatings" Relationship="Self.FK_SellerRating_Buyer" FromRole="UserProfile" ToRole="SellerRating" />
+          <NavigationProperty Name="SellerRatings1" Relationship="Self.FK_SellerRating_Seller" FromRole="UserProfile" ToRole="SellerRating" />
+        </EntityType>
+        <Association Name="FK_Product_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="categoryId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="categoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="productId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentReport_Comment">
+          <End Role="Comment" Type="Self.Comment" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CommentReport" Type="Self.CommentReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="commentId" />
+            </Principal>
+            <Dependent Role="CommentReport">
+              <PropertyRef Name="commentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentReport_User">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="CommentReport" Type="Self.CommentReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="CommentReport">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Seller">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="sellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SellerRating_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="SellerRating" Type="Self.SellerRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="productId" />
+            </Principal>
+            <Dependent Role="SellerRating">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SellerRating_Buyer">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="SellerRating" Type="Self.SellerRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="SellerRating">
+              <PropertyRef Name="buyerUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SellerRating_Seller">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="SellerRating" Type="Self.SellerRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="usrId" />
+            </Principal>
+            <Dependent Role="SellerRating">
+              <PropertyRef Name="sellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CommentTag">
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <End Role="Tag" Type="Self.Tag" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="PracticaMADModelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="CommentReports" EntityType="Self.CommentReport" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="SellerRatings" EntityType="Self.SellerRating" />
+          <EntitySet Name="Tags" EntityType="Self.Tag" />
+          <EntitySet Name="UserProfiles" EntityType="Self.UserProfile" />
+          <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Product" Association="Self.FK_Comment_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User" Association="Self.FK_Comment_User">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentReport_Comment" Association="Self.FK_CommentReport_Comment">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="CommentReport" EntitySet="CommentReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentReport_User" Association="Self.FK_CommentReport_User">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="CommentReport" EntitySet="CommentReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Seller" Association="Self.FK_Product_Seller">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SellerRating_Product" Association="Self.FK_SellerRating_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="SellerRating" EntitySet="SellerRatings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SellerRating_Buyer" Association="Self.FK_SellerRating_Buyer">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="SellerRating" EntitySet="SellerRatings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SellerRating_Seller" Association="Self.FK_SellerRating_Seller">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="SellerRating" EntitySet="SellerRatings" />
+          </AssociationSet>
+          <AssociationSet Name="CommentTag" Association="Self.CommentTag">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="Tag" EntitySet="Tags" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EsUdcDotNetPracticaMADModelStoreContainer" CdmEntityContainer="PracticaMADModelEntities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="Es.Udc.DotNet.PracticaMAD.Model.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
+                <ScalarProperty Name="categoryName" ColumnName="categoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="Es.Udc.DotNet.PracticaMAD.Model.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="commentId" ColumnName="commentId" />
+                <ScalarProperty Name="productId" ColumnName="productId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="commentText" ColumnName="commentText" />
+                <ScalarProperty Name="commentDate" ColumnName="commentDate" />
+                <ScalarProperty Name="isInReview" ColumnName="isInReview" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentReports">
+            <EntityTypeMapping TypeName="Es.Udc.DotNet.PracticaMAD.Model.CommentReport">
+              <MappingFragment StoreEntitySet="CommentReport">
+                <ScalarProperty Name="reportId" ColumnName="reportId" />
+                <ScalarProperty Name="commentId" ColumnName="commentId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="reason" ColumnName="reason" />
+                <ScalarProperty Name="reportDate" ColumnName="reportDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="Es.Udc.DotNet.PracticaMAD.Model.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="productId" ColumnName="productId" />
+                <ScalarProperty Name="productName" ColumnName="productName" />
+                <ScalarProperty Name="creationDate" ColumnName="creationDate" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="categoryId" ColumnName="categoryId" />
+                <ScalarProperty Name="sellerId" ColumnName="sellerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SellerRatings">
+            <EntityTypeMapping TypeName="Es.Udc.DotNet.PracticaMAD.Model.SellerRating">
+              <MappingFragment StoreEntitySet="SellerRating">
+                <ScalarProperty Name="ratingId" ColumnName="ratingId" />
+                <ScalarProperty Name="sellerId" ColumnName="sellerId" />
+                <ScalarProperty Name="productId" ColumnName="productId" />
+                <ScalarProperty Name="buyerUserId" ColumnName="buyerUserId" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="ratingDate" ColumnName="ratingDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="Es.Udc.DotNet.PracticaMAD.Model.Tag">
+              <MappingFragment StoreEntitySet="Tag">
+                <ScalarProperty Name="tagId" ColumnName="tagId" />
+                <ScalarProperty Name="tagName" ColumnName="tagName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="Es.Udc.DotNet.PracticaMAD.Model.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="usrId" ColumnName="usrId" />
+                <ScalarProperty Name="loginName" ColumnName="loginName" />
+                <ScalarProperty Name="enPassword" ColumnName="enPassword" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="country" ColumnName="country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CommentTag" TypeName="Es.Udc.DotNet.PracticaMAD.Model.CommentTag" StoreEntitySet="CommentTag">
+            <EndProperty Name="Comment">
+              <ScalarProperty Name="commentId" ColumnName="commentId" />
+            </EndProperty>
+            <EndProperty Name="Tag">
+              <ScalarProperty Name="tagId" ColumnName="tagId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
