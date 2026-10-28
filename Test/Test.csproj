@@ -103,6 +103,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IProductServiceTest.cs" />
     <Compile Include="IUserServiceTest.cs" />
     <Compile Include="TestManager.cs" />
     <Compile Include="DaoIntegrationTest.cs" />

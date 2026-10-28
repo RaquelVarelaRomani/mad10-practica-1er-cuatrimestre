@@ -160,8 +160,12 @@
     <Compile Include="SellerRating.cs">
       <DependentUpon>PracticaMADModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SERVICES\Block.cs" />
+    <Compile Include="SERVICES\IProductService.cs" />
     <Compile Include="SERVICES\IUserService.cs" />
     <Compile Include="SERVICES\LoginResult.cs" />
+    <Compile Include="SERVICES\ProductDetails.cs" />
+    <Compile Include="SERVICES\ProductService.cs" />
     <Compile Include="SERVICES\UserProfileDetails.cs" />
     <Compile Include="SERVICES\UserService.cs" />
     <Compile Include="SERVICES\Util\PasswordEncrypter.cs" />

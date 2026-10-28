@@ -34,8 +34,8 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             kernel.Bind<ICommentReportDao>().To<CommentReportDaoEntityFramework>();
             kernel.Bind<ISellerRatingDao>().To<SellerRatingDaoEntityFramework>();
             kernel.Bind<ITagDao>().To<TagDaoEntityFramework>();
-            kernel.Bind<IUserService>()
-                .To<UserService>();
+            kernel.Bind<IUserService>().To<UserService>();
+            kernel.Bind<IProductService>().To<ProductService>();
             #endregion
 
             string connectionString =
