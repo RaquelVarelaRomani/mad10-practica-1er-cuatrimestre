@@ -32,6 +32,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Model
         public string email { get; set; }
         public string language { get; set; }
         public string country { get; set; }
+        public bool isExternal { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }

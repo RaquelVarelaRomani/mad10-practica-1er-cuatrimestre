@@ -160,6 +160,11 @@
     <Compile Include="SellerRating.cs">
       <DependentUpon>PracticaMADModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SERVICES\IUserService.cs" />
+    <Compile Include="SERVICES\LoginResult.cs" />
+    <Compile Include="SERVICES\UserProfileDetails.cs" />
+    <Compile Include="SERVICES\UserService.cs" />
+    <Compile Include="SERVICES\Util\PasswordEncrypter.cs" />
     <Compile Include="Tag.cs">
       <DependentUpon>PracticaMADModel.tt</DependentUpon>
     </Compile>
@@ -236,9 +241,7 @@
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.11.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
     <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.11.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SERVICES\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,6 +9,7 @@ using Es.Udc.DotNet.PracticaMAD.Model.ProductDao;
 using Es.Udc.DotNet.PracticaMAD.Model.SellerRatingDao;
 using Es.Udc.DotNet.PracticaMAD.Model.TagDao;
 using Es.Udc.DotNet.PracticaMAD.Model.UserProfileDao;
+using Es.Udc.DotNet.PracticaMAD.Model.SERVICES;
 
 namespace Es.Udc.DotNet.PracticaMAD.Test
 {
@@ -33,7 +34,8 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             kernel.Bind<ICommentReportDao>().To<CommentReportDaoEntityFramework>();
             kernel.Bind<ISellerRatingDao>().To<SellerRatingDaoEntityFramework>();
             kernel.Bind<ITagDao>().To<TagDaoEntityFramework>();
-
+            kernel.Bind<IUserService>()
+                .To<UserService>();
             #endregion
 
             string connectionString =

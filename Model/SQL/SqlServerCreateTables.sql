@@ -54,6 +54,7 @@ CREATE TABLE UserProfile (
 	email varchar(60) NOT NULL,
 	language varchar(2) NOT NULL,
 	country varchar(2) NOT NULL,
+	isExternal BIT NOT NULL DEFAULT 0,
 
 	CONSTRAINT [PK_UserProfile] PRIMARY KEY (usrId),
 	CONSTRAINT [UQ_UserProfile_LoginName] UNIQUE (loginName)
