@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Services\ICommentServiceTest.cs" />
     <Compile Include="Services\IProductServiceTest.cs" />
+    <Compile Include="Services\ISellerServiceTest.cs" />
     <Compile Include="Services\IUserServiceTest.cs" />
     <Compile Include="Services\ITagServiceTest.cs" />
     <Compile Include="TestManager.cs" />

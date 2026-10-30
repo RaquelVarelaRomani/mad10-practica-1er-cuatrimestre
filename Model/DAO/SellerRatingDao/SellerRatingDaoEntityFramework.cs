@@ -13,7 +13,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SellerRatingDao
 
             var result = (from r in ratings
                           where r.sellerId == sellerId
-                          orderby r.ratingDate descending
+                          orderby r.ratingDate descending, r.ratingId descending
                           select r).Skip(startIndex).Take(count).ToList();
 
             return result;

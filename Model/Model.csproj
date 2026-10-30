@@ -171,6 +171,10 @@
     </Compile>
     <Compile Include="SERVICES\Block.cs" />
     <Compile Include="SERVICES\ProductService\IProductService.cs" />
+    <Compile Include="SERVICES\SellerService\ISellerService.cs" />
+    <Compile Include="SERVICES\SellerService\SellerRatingSummaryVO.cs" />
+    <Compile Include="SERVICES\SellerService\SellerRatingVO.cs" />
+    <Compile Include="SERVICES\SellerService\SellerService.cs" />
     <Compile Include="SERVICES\UserService\IUserService.cs" />
     <Compile Include="SERVICES\UserService\LoginResult.cs" />
     <Compile Include="SERVICES\ProductService\ProductVO.cs" />

@@ -44,6 +44,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             kernel.Bind<IProductService>().To<ProductService>();
             kernel.Bind<ICommentService>().To<CommentService>();
             kernel.Bind<ITagService>().To<TagService>();
+            kernel.Bind<ISellerService>().To<SellerService>();
 
             #endregion
 
