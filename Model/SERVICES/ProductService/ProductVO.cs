@@ -1,14 +1,11 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 {
     [Serializable]
-    public class ProductDetails
+    public class ProductVO
     {
         public String Name { get; private set; }
         public String CategoryName { get; private set; }
@@ -16,7 +13,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         public long SellerId { get; private set; }
         public String SellerName { get; private set; }
 
-        public ProductDetails(string name, string categoryName, DateTime creationDate, long sellerId, string sellerName)
+        public ProductVO(string name, string categoryName, DateTime creationDate, long sellerId, string sellerName)
         {
             this.Name = name;
             this.CategoryName = categoryName;
@@ -27,7 +24,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 
         public override bool Equals(object obj)
         {
-            return obj is ProductDetails details &&
+            return obj is ProductVO details &&
                    Name == details.Name &&
                    CategoryName == details.CategoryName &&
                    CreationDate == details.CreationDate &&

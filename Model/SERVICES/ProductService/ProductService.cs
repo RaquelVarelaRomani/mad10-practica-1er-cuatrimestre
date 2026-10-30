@@ -15,7 +15,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         public IProductDao ProductDao { private get; set; }
 
         [Transactional]
-        public Block<ProductDetails> FindProductByName(string name, int startIndex, int count)
+        public Block<ProductVO> FindProductByName(string name, int startIndex, int count)
         {
             List<Product> products =
                 ProductDao.FindByKeywords(name, null, startIndex, count + 1);
@@ -25,11 +25,11 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
             if (existMoreItems)
                 products.RemoveAt(count);
 
-            List<ProductDetails> productDetails = new List<ProductDetails>();
+            List<ProductVO> productDetails = new List<ProductVO>();
 
             foreach (Product product in products)
             {
-                productDetails.Add(new ProductDetails(
+                productDetails.Add(new ProductVO(
                     product.productName,
                     product.Category.categoryName,
                     product.creationDate,
@@ -38,7 +38,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
                 ));
             }
 
-            return new Block<ProductDetails>(
+            return new Block<ProductVO>(
                 productDetails, existMoreItems);
         }
     }

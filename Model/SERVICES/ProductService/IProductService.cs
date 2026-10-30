@@ -15,6 +15,6 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         /// <param name="startIndex">The start index.</param>
         /// <param name="count">The count.</param>
         /// <returns>A pageable list of products</returns>
-        Block<ProductDetails> FindProductByName(string name, int startIndex, int count);
+        Block<ProductVO> FindProductByName(string name, int startIndex, int count);
     }
 }

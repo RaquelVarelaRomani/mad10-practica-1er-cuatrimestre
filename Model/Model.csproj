@@ -89,6 +89,9 @@
       <HintPath>..\packages\Ninject.Extensions.Interception.3.2.0.0\lib\net45-full\Ninject.Extensions.Interception.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -130,12 +133,18 @@
     <Compile Include="DAO\TagDao\TagDaoEntityFramework.cs" />
     <Compile Include="DAO\UserProfileDao\IUserProfileDao.cs" />
     <Compile Include="DAO\UserProfileDao\UserProfileDaoEntityFramework.cs" />
-    <Compile Include="Exceptions\AlreadyReportedException.cs" />
+    <Compile Include="Exceptions\CommentAlreadyReportedException.cs" />
     <Compile Include="Exceptions\CommentInReviewException.cs" />
     <Compile Include="Exceptions\IncorrectPasswordException.cs" />
     <Compile Include="Exceptions\InvalidRatingScoreException.cs" />
     <Compile Include="Exceptions\NotCommentAuthorException.cs" />
     <Compile Include="Exceptions\SelfRatingException.cs" />
+    <Compile Include="SERVICES\CommentService\CommentService.cs" />
+    <Compile Include="SERVICES\CommentService\CommentVO.cs" />
+    <Compile Include="SERVICES\CommentService\ICommentService.cs" />
+    <Compile Include="SERVICES\TagService\ITagService.cs" />
+    <Compile Include="SERVICES\TagService\TagService.cs" />
+    <Compile Include="SERVICES\TagService\TagVO.cs" />
     <Compile Include="Domain\EntitiesCustom.cs" />
     <Compile Include="PracticaMADModelEntitiesExtensions.cs" />
     <Compile Include="PracticaMADModel.Context.cs">
@@ -161,14 +170,14 @@
       <DependentUpon>PracticaMADModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SERVICES\Block.cs" />
-    <Compile Include="SERVICES\IProductService.cs" />
-    <Compile Include="SERVICES\IUserService.cs" />
-    <Compile Include="SERVICES\LoginResult.cs" />
-    <Compile Include="SERVICES\ProductDetails.cs" />
-    <Compile Include="SERVICES\ProductService.cs" />
-    <Compile Include="SERVICES\UserProfileDetails.cs" />
-    <Compile Include="SERVICES\UserService.cs" />
-    <Compile Include="SERVICES\Util\PasswordEncrypter.cs" />
+    <Compile Include="SERVICES\ProductService\IProductService.cs" />
+    <Compile Include="SERVICES\UserService\IUserService.cs" />
+    <Compile Include="SERVICES\UserService\LoginResult.cs" />
+    <Compile Include="SERVICES\ProductService\ProductVO.cs" />
+    <Compile Include="SERVICES\ProductService\ProductService.cs" />
+    <Compile Include="SERVICES\UserService\UserProfileDetails.cs" />
+    <Compile Include="SERVICES\UserService\UserService.cs" />
+    <Compile Include="SERVICES\UserService\Util\PasswordEncrypter.cs" />
     <Compile Include="Tag.cs">
       <DependentUpon>PracticaMADModel.tt</DependentUpon>
     </Compile>
