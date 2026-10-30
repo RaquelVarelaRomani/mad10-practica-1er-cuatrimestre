@@ -490,8 +490,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="CommentTag">
-          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
-          <End Role="Tag" Type="Self.Tag" Multiplicity="*" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" >
+          </End>
+          <End Role="Tag" Type="Self.Tag" Multiplicity="*" >
+          </End>
         </Association>
         <EntityContainer Name="PracticaMADModelEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Categories" EntityType="Self.Category" />

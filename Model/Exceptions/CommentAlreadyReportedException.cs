@@ -7,12 +7,12 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.Exceptions
     /// Excepcion lanzada cuando un usuario intenta reportar un comentario que ya ha reportado previamente.
     /// </summary>
     [Serializable]
-    public class AlreadyReportedException : ModelException
+    public class CommentAlreadyReportedException : ModelException
     {
         public long CommentId { get; private set; }
         public long UserId { get; private set; }
 
-        public AlreadyReportedException(long commentId, long userId)
+        public CommentAlreadyReportedException(long commentId, long userId)
             : base(String.Format("El usuario con ID {0} ya ha reportado el comentario con ID {1}.", userId, commentId))
         {
             this.CommentId = commentId;

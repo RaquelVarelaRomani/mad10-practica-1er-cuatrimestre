@@ -1,8 +1,11 @@
+
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Es.Udc.DotNet.ModelUtil.Dao;
 using Es.Udc.DotNet.ModelUtil.Exceptions;
+using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
 {
@@ -23,16 +26,12 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
                     select t).Any();
         }
 
-        /// <summary>
-        /// Busca una etiqueta por su nombre exacto (case-insensitive).
-        /// </summary>
-        /// <param name="tagName">Nombre de la etiqueta.</param>
-        /// <returns>La etiqueta encontrada.</returns>
-        /// <exception cref="InstanceNotFoundException"/>
         public Tag FindByName(string tagName)
         {
             DbSet<Tag> tags = Context.Set<Tag>();
-            string lowerName = string.IsNullOrWhiteSpace(tagName) ? string.Empty : tagName.Trim().ToLower();
+
+            string lowerName = string.IsNullOrWhiteSpace(tagName)
+                ? string.Empty : tagName.Trim().ToLower();
 
             Tag tag = (from t in tags
                        where t.tagName.ToLower() == lowerName
@@ -40,7 +39,8 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
 
             if (tag == null)
             {
-                throw new InstanceNotFoundException(tagName, typeof(Tag).FullName);
+                throw new InstanceNotFoundException(
+                    tagName, typeof(Tag).FullName);
             }
 
             return tag;
@@ -55,23 +55,25 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
                     select t).ToList();
         }
 
-        public Dictionary<Tag, int> GetTagCloud()
+        public IPagedList<Tag> GetMostUsedTags(int count, int page, int pageSize)
         {
+            if (count <= 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            if (page < 1)
+                throw new ArgumentOutOfRangeException(nameof(page));
+
+            if (pageSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageSize));
+
             DbSet<Tag> tags = Context.Set<Tag>();
 
-            var list = (from t in tags.Include(x => x.Comments)
-                        orderby t.tagName ascending
-                        select t).ToList();
-
-            var result = new Dictionary<Tag, int>();
-
-            foreach (var tag in list)
-            {
-                result.Add(tag, tag.Comments != null ? tag.Comments.Count : 0);
-            }
-
-            return result;
+            return tags
+                .OrderByDescending(t => t.Comments.Count)
+                .ThenBy(t => t.tagName)
+                .ThenBy(t => t.tagId)
+                .Take(count)
+                .ToPagedList(page, pageSize);
         }
     }
 }
-

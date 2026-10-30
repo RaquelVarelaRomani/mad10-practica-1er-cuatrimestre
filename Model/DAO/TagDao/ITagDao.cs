@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Es.Udc.DotNet.ModelUtil.Dao;
 using Es.Udc.DotNet.ModelUtil.Exceptions;
+using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
 {
@@ -28,10 +29,14 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
         List<Tag> FindAll();
 
         /// <summary>
-        /// Obtiene todas las etiquetas junto con el numero de comentarios en los que se utiliza cada una (para la nube de etiquetas).
+        /// Obtiene las etiquetas mas utilizadas, ordenadas por frecuencia descendente y paginadas.
         /// </summary>
-        /// <returns>Diccionario con cada etiqueta y su frecuencia de uso.</returns>
-        Dictionary<Tag, int> GetTagCloud();
+        /// <param name="count">Numero maximo de etiquetas a considerar.</param>
+        /// <param name="page">Numero de pagina (empezando en 1).</param>
+        /// <param name="pageSize">Cantidad de etiquetas por pagina.</param>
+        /// <returns>Lista paginada de las etiquetas mas utilizadas.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException"/>
+        IPagedList<Tag> GetMostUsedTags(int count, int page, int pageSize);
     }
 }
 
