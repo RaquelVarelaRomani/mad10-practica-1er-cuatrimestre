@@ -101,6 +101,7 @@
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq">
@@ -119,6 +120,11 @@
     <Compile Include="CommentReport.cs">
       <DependentUpon>PracticaMADModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Cache\ISearchCache.cs" />
+    <Compile Include="Cache\SearchCache.cs" />
+    <Compile Include="Cache\SearchCacheAttribute.cs" />
+    <Compile Include="Cache\SearchCacheInterceptor.cs" />
+    <Compile Include="Cache\SearchCacheKeyGenerator.cs" />
     <Compile Include="DAO\CategoryDao\CategoryDaoEntityFramework.cs" />
     <Compile Include="DAO\CategoryDao\ICategoryDao.cs" />
     <Compile Include="DAO\CommentDao\CommentDaoEntityFramework.cs" />

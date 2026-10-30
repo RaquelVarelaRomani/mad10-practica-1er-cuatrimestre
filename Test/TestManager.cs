@@ -2,6 +2,7 @@ using Ninject;
 using System.Configuration;
 using System.Data.Entity;
 using Es.Udc.DotNet.PracticaMAD.Model;
+using Es.Udc.DotNet.PracticaMAD.Model.Cache;
 using Es.Udc.DotNet.PracticaMAD.Model.CategoryDao;
 using Es.Udc.DotNet.PracticaMAD.Model.CommentDao;
 using Es.Udc.DotNet.PracticaMAD.Model.CommentReportDao;
@@ -45,6 +46,9 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             kernel.Bind<ICommentService>().To<CommentService>();
             kernel.Bind<ITagService>().To<TagService>();
             kernel.Bind<ISellerService>().To<SellerService>();
+
+            // Cache de busquedas (mantiene las 5 ultimas consultas en memoria)
+            kernel.Bind<ISearchCache>().To<SearchCache>().InSingletonScope();
 
             #endregion
 
