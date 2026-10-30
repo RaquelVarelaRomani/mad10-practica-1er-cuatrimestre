@@ -21,12 +21,16 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         /// <returns>The NInject kernel</returns>
         public static IKernel ConfigureNInjectKernel()
         {
-            NinjectSettings settings = new NinjectSettings() { LoadExtensions = true };
+            NinjectSettings settings = new NinjectSettings()
+            {
+                LoadExtensions = true
+            };
 
             IKernel kernel = new StandardKernel(settings);
 
             #region PracticaMAD Bindings
 
+            // DAOs
             kernel.Bind<IUserProfileDao>().To<UserProfileDaoEntityFramework>();
             kernel.Bind<ICategoryDao>().To<CategoryDaoEntityFramework>();
             kernel.Bind<IProductDao>().To<ProductDaoEntityFramework>();
@@ -34,17 +38,22 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             kernel.Bind<ICommentReportDao>().To<CommentReportDaoEntityFramework>();
             kernel.Bind<ISellerRatingDao>().To<SellerRatingDaoEntityFramework>();
             kernel.Bind<ITagDao>().To<TagDaoEntityFramework>();
+
+            // Servicios
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IProductService>().To<ProductService>();
+            kernel.Bind<ICommentService>().To<CommentService>();
+            kernel.Bind<ITagService>().To<TagService>();
+
             #endregion
 
             string connectionString =
                 ConfigurationManager.ConnectionStrings["PracticaMADModelEntities"].ConnectionString;
 
-            kernel.Bind<DbContext>().
-                To<PracticaMADModelEntities>().
-                InSingletonScope().
-                WithConstructorArgument("nameOrConnectionString", connectionString);
+            kernel.Bind<DbContext>()
+                .To<PracticaMADModelEntities>()
+                .InSingletonScope()
+                .WithConstructorArgument("nameOrConnectionString", connectionString);
 
             return kernel;
         }

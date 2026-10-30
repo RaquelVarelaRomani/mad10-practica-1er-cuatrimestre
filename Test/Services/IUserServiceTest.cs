@@ -26,9 +26,9 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         private const string language = "es";
         private const string country = "ES";
 
-        private static IKernel kernel;
-        private static IUserService userService;
-        private static IUserProfileDao userProfileDao;
+        private IKernel kernel;
+        private IUserService userService;
+        private IUserProfileDao userProfileDao;
 
         #region Additional test attributes
 
@@ -47,8 +47,8 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             );
         }
 
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
+        [TestInitialize]
+        public void MyTestInitialize()
         {
             kernel = TestManager.ConfigureNInjectKernel();
 
@@ -56,20 +56,10 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             userService = kernel.Get<IUserService>();
         }
 
-        [ClassCleanup]
-        public static void MyClassCleanup()
-        {
-            TestManager.ClearNInjectKernel(kernel);
-        }
-
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-        }
-
         [TestCleanup]
         public void MyTestCleanup()
         {
+            TestManager.ClearNInjectKernel(kernel);
         }
 
         #endregion

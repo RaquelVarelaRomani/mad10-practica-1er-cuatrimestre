@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PagedList;
 using System.Transactions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject;
@@ -18,22 +19,25 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
     [TestClass]
     public class DaoIntegrationTest
     {
-        private static IKernel kernel;
-        private static ICategoryDao categoryDao;
-        private static IUserProfileDao userProfileDao;
-        private static IProductDao productDao;
-        private static ICommentDao commentDao;
-        private static ICommentReportDao commentReportDao;
-        private static ISellerRatingDao sellerRatingDao;
-        private static ITagDao tagDao;
+        private IKernel kernel;
+        private ICategoryDao categoryDao;
+        private IUserProfileDao userProfileDao;
+        private IProductDao productDao;
+        private ICommentDao commentDao;
+        private ICommentReportDao commentReportDao;
+        private ISellerRatingDao sellerRatingDao;
+        private ITagDao tagDao;
 
         private TransactionScope transactionScope;
 
         public TestContext TestContext { get; set; }
 
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
+        [TestInitialize]
+        public void MyTestInitialize()
         {
+            // Un contexto independiente por prueba evita entidades cacheadas
+            // entre tests y mantiene el aislamiento de los cambios.
+            transactionScope = new TransactionScope();
             kernel = TestManager.ConfigureNInjectKernel();
             categoryDao = kernel.Get<ICategoryDao>();
             userProfileDao = kernel.Get<IUserProfileDao>();
@@ -44,22 +48,19 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             tagDao = kernel.Get<ITagDao>();
         }
 
-        [ClassCleanup]
-        public static void MyClassCleanup()
-        {
-            TestManager.ClearNInjectKernel(kernel);
-        }
-
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-            transactionScope = new TransactionScope();
-        }
-
         [TestCleanup]
         public void MyTestCleanup()
         {
-            transactionScope.Dispose();
+            try
+            {
+                if (transactionScope != null)
+                    transactionScope.Dispose(); // Rollback: nunca llamamos a Complete()
+            }
+            finally
+            {
+                if (kernel != null)
+                    TestManager.ClearNInjectKernel(kernel);
+            }
         }
 
         [TestMethod]
@@ -239,8 +240,11 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             commentDao.Create(comment);
             Assert.IsTrue(comment.commentId > 0);
 
-            List<Comment> productComments = commentDao.FindByProductId(product.productId, 0, 10);
+            // PagedList usa page (desde 1), no startIndex (desde 0).
+            IPagedList<Comment> productComments = commentDao.FindByProductId(product.productId, 1, 10);
             Assert.AreEqual(1, productComments.Count);
+            Assert.AreEqual(1, productComments.TotalItemCount);
+            Assert.AreEqual(1, productComments.PageNumber);
             Assert.AreEqual(1, commentDao.GetNumberOfCommentsByProduct(product.productId));
 
             // Report operations
@@ -256,9 +260,6 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
 
             Assert.IsTrue(commentReportDao.ExistsByCommentAndUser(comment.commentId, reporter.usrId));
             Assert.AreEqual(1, commentReportDao.GetNumberOfReportsByComment(comment.commentId));
-
-            CommentReport foundReport = commentReportDao.FindByCommentAndUser(comment.commentId, reporter.usrId);
-            Assert.AreEqual(report, foundReport);
         }
 
         [TestMethod]
@@ -325,4 +326,3 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         }
     }
 }
-

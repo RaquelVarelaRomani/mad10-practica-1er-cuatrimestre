@@ -112,7 +112,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         [TestMethod]
         public void FindProductByNameTest()
         {
-            Block<ProductDetails> result = productService.FindProductByName("iPhone", 0, 10);
+            Block<ProductVO> result = productService.FindProductByName("iPhone", 0, 10);
 
             Assert.AreEqual(2, result.Items.Count);
             Assert.IsTrue(result.Items.Any(p => p.Name == "iPhone 13"));
@@ -122,7 +122,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         [TestMethod]
         public void FindProductByNameIgnoreCaseTest()
         {
-            Block<ProductDetails> result = productService.FindProductByName("IPHONE", 0, 10);
+            Block<ProductVO> result = productService.FindProductByName("IPHONE", 0, 10);
 
             Assert.AreEqual(2, result.Items.Count);
         }
@@ -130,7 +130,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         [TestMethod]
         public void FindProductByNamePartialMatchTest()
         {
-            Block<ProductDetails> result = productService.FindProductByName("hone 13", 0, 10);
+            Block<ProductVO> result = productService.FindProductByName("hone 13", 0, 10);
 
             Assert.AreEqual(1, result.Items.Count);
             Assert.AreEqual("iPhone 13", result.Items.First().Name);
@@ -139,7 +139,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         [TestMethod]
         public void FindProductByNameNotFoundTest()
         {
-            Block<ProductDetails> result = productService.FindProductByName("ProductoInexistenteXYZ", 0, 10);
+            Block<ProductVO> result = productService.FindProductByName("ProductoInexistenteXYZ", 0, 10);
 
             Assert.AreEqual(0, result.Items.Count);
             Assert.IsFalse(result.ExistsMoreItems);
@@ -148,8 +148,8 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         [TestMethod]
         public void FindProductByNamePaginationTest()
         {
-            Block<ProductDetails> result1 = productService.FindProductByName("iPhone", 0, 1);
-            Block<ProductDetails> result2 = productService.FindProductByName("iPhone", 1, 1);
+            Block<ProductVO> result1 = productService.FindProductByName("iPhone", 0, 1);
+            Block<ProductVO> result2 = productService.FindProductByName("iPhone", 1, 1);
 
             Assert.AreEqual(1, result1.Items.Count);
             Assert.IsTrue(result1.ExistsMoreItems);
@@ -161,11 +161,11 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         [TestMethod]
         public void FindProductByNameDetailsTest()
         {
-            Block<ProductDetails> result = productService.FindProductByName("iPhone 13", 0, 10);
+            Block<ProductVO> result = productService.FindProductByName("iPhone 13", 0, 10);
 
             Assert.AreEqual(1, result.Items.Count);
 
-            ProductDetails details = result.Items.First();
+            ProductVO details = result.Items.First();
 
             Assert.AreEqual(product1.productName, details.Name);
             Assert.AreEqual(category.categoryName, details.CategoryName);
