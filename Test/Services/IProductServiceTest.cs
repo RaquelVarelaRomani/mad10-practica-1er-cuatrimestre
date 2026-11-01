@@ -167,6 +167,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
 
             ProductVO details = result.Items.First();
 
+            Assert.AreEqual(product1.productId, details.ProductId);
             Assert.AreEqual(product1.productName, details.Name);
             Assert.AreEqual(category.categoryName, details.CategoryName);
             Assert.AreEqual(product1.creationDate, details.CreationDate);
