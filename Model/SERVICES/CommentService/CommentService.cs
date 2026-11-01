@@ -8,7 +8,6 @@ using Es.Udc.DotNet.PracticaMAD.Model.TagDao;
 using Es.Udc.DotNet.PracticaMAD.Model.ProductDao;
 using Es.Udc.DotNet.PracticaMAD.Model.UserProfileDao;
 using Es.Udc.DotNet.PracticaMAD.Model.Exceptions;
-using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 {
@@ -155,23 +154,26 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 
         /// <summary>Obtiene los comentarios paginados de un usuario.</summary>
         [Transactional]
-        public IPagedList<CommentVO> FindCommentsByUser(long userId, int page, int pageSize)
+        public Block<CommentVO> FindCommentsByUser(long userId, int startIndex, int count)
         {
-            return ConvertToPagedVO(commentDao.FindByUser(userId, page, pageSize));
+            ValidatePaging(startIndex, count);
+            return ConvertToBlock(commentDao.FindByUser(userId, startIndex, count + 1), count);
         }
 
         /// <summary>Obtiene los comentarios paginados de un producto.</summary>
         [Transactional]
-        public IPagedList<CommentVO> FindCommentsByProduct(long productId, int page, int pageSize)
+        public Block<CommentVO> FindCommentsByProduct(long productId, int startIndex, int count)
         {
-            return ConvertToPagedVO(commentDao.FindByProductId(productId, page, pageSize));
+            ValidatePaging(startIndex, count);
+            return ConvertToBlock(commentDao.FindByProductId(productId, startIndex, count + 1), count);
         }
 
         /// <summary>Obtiene los comentarios paginados de una etiqueta.</summary>
         [Transactional]
-        public IPagedList<CommentVO> FindCommentsByTagId(long tagId, int page, int pageSize)
+        public Block<CommentVO> FindCommentsByTagId(long tagId, int startIndex, int count)
         {
-            return ConvertToPagedVO(commentDao.FindByTagId(tagId, page, pageSize));
+            ValidatePaging(startIndex, count);
+            return ConvertToBlock(commentDao.FindByTagId(tagId, startIndex, count + 1), count);
         }
 
         /// <summary>Cuenta los comentarios de un producto.</summary>
@@ -262,12 +264,26 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
                 tags);
         }
 
-        /// <summary>Conserva los metadatos de paginacion al construir VOs.</summary>
-        private IPagedList<CommentVO> ConvertToPagedVO(IPagedList<Comment> comments)
+        /// <summary>
+        /// Convierte las entidades en un bloque de VOs y comprueba si hay mas resultados.
+        /// </summary>
+        private Block<CommentVO> ConvertToBlock(List<Comment> comments, int count)
         {
-            return new StaticPagedList<CommentVO>(
-                comments.Select(ToCommentVO).ToList(),
-                comments.GetMetaData());
+            bool existsMoreItems = comments.Count > count;
+            if (existsMoreItems)
+                comments.RemoveAt(count);
+
+            List<CommentVO> commentVOs = comments.Select(ToCommentVO).ToList();
+            return new Block<CommentVO>(commentVOs, existsMoreItems);
+        }
+
+        private static void ValidatePaging(int startIndex, int count)
+        {
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+
+            if (count <= 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
         }
     }
 }

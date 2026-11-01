@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using PagedList;
 using System.Transactions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject;
@@ -240,11 +239,9 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             commentDao.Create(comment);
             Assert.IsTrue(comment.commentId > 0);
 
-            // PagedList usa page (desde 1), no startIndex (desde 0).
-            IPagedList<Comment> productComments = commentDao.FindByProductId(product.productId, 1, 10);
+            // Paginacion por posicion inicial (desde 0) y cantidad maxima.
+            List<Comment> productComments = commentDao.FindByProductId(product.productId, 0, 10);
             Assert.AreEqual(1, productComments.Count);
-            Assert.AreEqual(1, productComments.TotalItemCount);
-            Assert.AreEqual(1, productComments.PageNumber);
             Assert.AreEqual(1, commentDao.GetNumberOfCommentsByProduct(product.productId));
 
             // Report operations

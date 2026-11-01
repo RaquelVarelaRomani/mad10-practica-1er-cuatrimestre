@@ -1,11 +1,9 @@
-
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Es.Udc.DotNet.ModelUtil.Dao;
 using Es.Udc.DotNet.ModelUtil.Exceptions;
-using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
 {
@@ -55,16 +53,13 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
                     select t).ToList();
         }
 
-        public IPagedList<Tag> GetMostUsedTags(int count, int page, int pageSize)
+        public List<Tag> GetMostUsedTags(int startIndex, int count)
         {
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+
             if (count <= 0)
                 throw new ArgumentOutOfRangeException(nameof(count));
-
-            if (page < 1)
-                throw new ArgumentOutOfRangeException(nameof(page));
-
-            if (pageSize <= 0)
-                throw new ArgumentOutOfRangeException(nameof(pageSize));
 
             DbSet<Tag> tags = Context.Set<Tag>();
 
@@ -72,8 +67,9 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
                 .OrderByDescending(t => t.Comments.Count)
                 .ThenBy(t => t.tagName)
                 .ThenBy(t => t.tagId)
+                .Skip(startIndex)
                 .Take(count)
-                .ToPagedList(page, pageSize);
+                .ToList();
         }
     }
 }

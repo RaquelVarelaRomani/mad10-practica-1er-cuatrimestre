@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Es.Udc.DotNet.ModelUtil.Transactions;
 using Es.Udc.DotNet.PracticaMAD.Model.TagDao;
 using Es.Udc.DotNet.PracticaMAD.Model.CommentDao;
-using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 {
@@ -21,10 +21,31 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         /// Obtiene las etiquetas mas utilizadas, paginadas.
         /// </summary>
         [Transactional]
-        public IPagedList<Tag> GetMostUsedTags(
-            int count, int page, int pageSize)
+        public Block<Tag> GetMostUsedTags(
+            int maxTags, int startIndex, int count)
         {
-            return tagDao.GetMostUsedTags(count, page, pageSize);
+            if (maxTags <= 0)
+                throw new ArgumentOutOfRangeException(nameof(maxTags));
+
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+
+            if (count <= 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            // No se devuelven etiquetas fuera del limite maxTags.
+            if (startIndex >= maxTags)
+                return new Block<Tag>(new List<Tag>(), false);
+
+            int remaining = maxTags - startIndex;
+            int fetchCount = count < remaining ? count + 1 : remaining;
+            List<Tag> tags = tagDao.GetMostUsedTags(startIndex, fetchCount);
+
+            bool existsMoreItems = tags.Count > count;
+            if (existsMoreItems)
+                tags.RemoveAt(count);
+
+            return new Block<Tag>(tags, existsMoreItems);
         }
 
         /// <summary>

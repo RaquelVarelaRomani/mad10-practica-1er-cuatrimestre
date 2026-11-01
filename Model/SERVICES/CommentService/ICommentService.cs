@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Es.Udc.DotNet.ModelUtil.Exceptions;
 using Es.Udc.DotNet.ModelUtil.Transactions;
 using Es.Udc.DotNet.PracticaMAD.Model.Exceptions;
-using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 {
@@ -75,38 +74,38 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         /// Obtiene los comentarios de un usuario, paginados.
         /// </summary>
         /// <param name="userId">Identificador del usuario.</param>
-        /// <param name="page">Numero de pagina (empezando en 1).</param>
-        /// <param name="pageSize">Comentarios por pagina.</param>
-        /// <returns>Lista paginada de comentarios.</returns>
+        /// <param name="startIndex">Posicion inicial, empezando en 0.</param>
+        /// <param name="count">Numero maximo de comentarios por bloque.</param>
+        /// <returns>Bloque de comentarios e indicador de si hay mas resultados.</returns>
         /// <exception cref="ArgumentOutOfRangeException"/>
         [Transactional]
-        IPagedList<CommentVO> FindCommentsByUser(
-            long userId, int page, int pageSize);
+        Block<CommentVO> FindCommentsByUser(
+            long userId, int startIndex, int count);
 
         /// <summary>
         /// Obtiene los comentarios de un producto, ordenados
         /// por fecha descendente y paginados.
         /// </summary>
         /// <param name="productId">Identificador del producto.</param>
-        /// <param name="page">Numero de pagina (empezando en 1).</param>
-        /// <param name="pageSize">Comentarios por pagina.</param>
-        /// <returns>Lista paginada de comentarios.</returns>
+        /// <param name="startIndex">Posicion inicial, empezando en 0.</param>
+        /// <param name="count">Numero maximo de comentarios por bloque.</param>
+        /// <returns>Bloque de comentarios e indicador de si hay mas resultados.</returns>
         /// <exception cref="ArgumentOutOfRangeException"/>
         [Transactional]
-        IPagedList<CommentVO> FindCommentsByProduct(
-            long productId, int page, int pageSize);
+        Block<CommentVO> FindCommentsByProduct(
+            long productId, int startIndex, int count);
 
         /// <summary>
         /// Obtiene los comentarios asociados a una etiqueta.
         /// </summary>
         /// <param name="tagId">Identificador de la etiqueta.</param>
-        /// <param name="page">Numero de pagina (empezando en 1).</param>
-        /// <param name="pageSize">Comentarios por pagina.</param>
-        /// <returns>Lista paginada de comentarios.</returns>
+        /// <param name="startIndex">Posicion inicial, empezando en 0.</param>
+        /// <param name="count">Numero maximo de comentarios por bloque.</param>
+        /// <returns>Bloque de comentarios e indicador de si hay mas resultados.</returns>
         /// <exception cref="ArgumentOutOfRangeException"/>
         [Transactional]
-        IPagedList<CommentVO> FindCommentsByTagId(
-            long tagId, int page, int pageSize);
+        Block<CommentVO> FindCommentsByTagId(
+            long tagId, int startIndex, int count);
 
         /// <summary>
         /// Obtiene el numero total de comentarios de un producto.

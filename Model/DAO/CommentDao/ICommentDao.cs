@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Es.Udc.DotNet.ModelUtil.Dao;
-using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.CommentDao
 {
@@ -10,19 +9,19 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.CommentDao
         /// Obtiene los comentarios de un producto ordenados por fecha descendente y paginados.
         /// </summary>
         /// <param name="productId">Identificador del producto.</param>
-        /// <param name="page">Numero de pagina (empezando en 1).</param>
-        /// <param name="pageSize">Cantidad de comentarios por pagina.</param>
-        /// <returns>Lista paginada de comentarios del producto.</returns>
-        IPagedList<Comment> FindByProductId(long productId, int page, int pageSize);
+        /// <param name="startIndex">Posicion inicial, empezando en 0.</param>
+        /// <param name="count">Numero maximo de comentarios que se devuelven.</param>
+        /// <returns>Lista de comentarios paginados del producto.</returns>
+        List<Comment> FindByProductId(long productId, int startIndex, int count);
 
         /// <summary>
         /// Obtiene los comentarios realizados por un usuario, ordenados por fecha descendente y paginados.
         /// </summary>
         /// <param name="userId">Identificador del usuario.</param>
-        /// <param name="page">Numero de pagina (empezando en 1).</param>
-        /// <param name="pageSize">Cantidad de comentarios por pagina.</param>
-        /// <returns>Lista paginada de comentarios del usuario.</returns>
-        IPagedList<Comment> FindByUser(long userId, int page, int pageSize);
+        /// <param name="startIndex">Posicion inicial, empezando en 0.</param>
+        /// <param name="count">Numero maximo de comentarios que se devuelven.</param>
+        /// <returns>Lista de comentarios paginados del usuario.</returns>
+        List<Comment> FindByUser(long userId, int startIndex, int count);
 
         /// <summary>
         /// Obtiene el numero total de comentarios de un producto.
@@ -35,10 +34,10 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.CommentDao
         /// Obtiene los comentarios de una etiqueta ordenados por fecha descendente y paginados.
         /// </summary>
         /// <param name="tagId">Identificador de la etiqueta.</param>
-        /// <param name="page">Numero de pagina (empezando en 1).</param>
-        /// <param name="pageSize">Cantidad de comentarios por pagina.</param>
-        /// <returns>Lista paginada de comentarios con dicha etiqueta.</returns>
-        IPagedList<Comment> FindByTagId(long tagId, int page, int pageSize);
+        /// <param name="startIndex">Posicion inicial, empezando en 0.</param>
+        /// <param name="count">Numero maximo de comentarios que se devuelven.</param>
+        /// <returns>Lista de comentarios paginados con dicha etiqueta.</returns>
+        List<Comment> FindByTagId(long tagId, int startIndex, int count);
 
         /// <summary>
         /// Obtiene el numero total de comentarios asociados a una etiqueta.

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Es.Udc.DotNet.ModelUtil.Transactions;
-using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 {
@@ -10,14 +9,14 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         /// Obtiene las etiquetas mas utilizadas, ordenadas
         /// por frecuencia descendente y paginadas.
         /// </summary>
-        /// <param name="count">Numero maximo de etiquetas.</param>
-        /// <param name="page">Numero de pagina (empezando en 1).</param>
-        /// <param name="pageSize">Etiquetas por pagina.</param>
-        /// <returns>Lista paginada de etiquetas.</returns>
+        /// <param name="maxTags">Numero maximo de etiquetas a considerar.</param>
+        /// <param name="startIndex">Posicion inicial, empezando en 0.</param>
+        /// <param name="count">Numero maximo de etiquetas por bloque.</param>
+        /// <returns>Bloque de etiquetas e indicador de si hay mas resultados.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException"/>
         [Transactional]
-        IPagedList<Tag> GetMostUsedTags(
-            int count, int page, int pageSize);
+        Block<Tag> GetMostUsedTags(
+            int maxTags, int startIndex, int count);
 
         /// <summary>
         /// Obtiene todas las etiquetas con su frecuencia de uso.

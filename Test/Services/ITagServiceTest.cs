@@ -4,7 +4,6 @@ using System.Linq;
 using System.Transactions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject;
-using PagedList;
 using Es.Udc.DotNet.PracticaMAD.Model;
 using Es.Udc.DotNet.PracticaMAD.Model.CategoryDao;
 using Es.Udc.DotNet.PracticaMAD.Model.CommentDao;
@@ -116,10 +115,11 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             // La BD puede tener etiquetas precargadas: pedimos todas,
             // y solo comparamos el orden relativo de las creadas en este test.
             int totalTags = tagDao.FindAll().Count;
-            IPagedList<Tag> result = tagService.GetMostUsedTags(totalTags, 1, totalTags);
-            List<long> ids = result.Select(t => t.tagId).ToList();
+            Block<Tag> result = tagService.GetMostUsedTags(totalTags, 0, totalTags);
+            List<long> ids = result.Items.Select(t => t.tagId).ToList();
 
-            Assert.AreEqual(totalTags, result.TotalItemCount);
+            Assert.AreEqual(totalTags, result.Items.Count);
+            Assert.IsFalse(result.ExistsMoreItems);
             Assert.IsTrue(ids.IndexOf(frequentId) >= 0);
             Assert.IsTrue(ids.IndexOf(frequentId) < ids.IndexOf(rareId));
             Assert.IsTrue(ids.IndexOf(rareId) < ids.IndexOf(unusedId));
@@ -133,28 +133,50 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             tagDao.Create(new Tag { tagName = UniqueName("three") });
 
             int total = tagDao.FindAll().Count;
-            IPagedList<Tag> first = tagService.GetMostUsedTags(total, 1, 1);
-            IPagedList<Tag> second = tagService.GetMostUsedTags(total, 2, 1);
+            Block<Tag> first = tagService.GetMostUsedTags(total, 0, 1);
+            Block<Tag> second = tagService.GetMostUsedTags(total, 1, 1);
 
-            Assert.AreEqual(total, first.TotalItemCount);
-            Assert.AreEqual(1, first.PageNumber);
-            Assert.AreEqual(1, first.Count);
-            Assert.AreEqual(1, second.Count);
-            Assert.AreNotEqual(first[0].tagId, second[0].tagId);
+            Assert.AreEqual(1, first.Items.Count);
+            Assert.IsTrue(first.ExistsMoreItems);
+            Assert.AreEqual(1, second.Items.Count);
+            Assert.IsTrue(second.ExistsMoreItems);
+            Assert.AreNotEqual(first.Items[0].tagId, second.Items[0].tagId);
         }
 
         [TestMethod]
         public void GetMostUsedTagsWithInvalidCountThrowsArgumentOutOfRangeException()
         {
             ExpectException<ArgumentOutOfRangeException>(() =>
-                tagService.GetMostUsedTags(0, 1, 10));
+                tagService.GetMostUsedTags(0, 0, 10));
         }
 
         [TestMethod]
-        public void GetMostUsedTagsWithInvalidPageThrowsArgumentOutOfRangeException()
+        public void GetMostUsedTagsWithInvalidStartIndexThrowsArgumentOutOfRangeException()
         {
             ExpectException<ArgumentOutOfRangeException>(() =>
-                tagService.GetMostUsedTags(10, 0, 10));
+                tagService.GetMostUsedTags(10, -1, 10));
+        }
+
+        [TestMethod]
+        public void GetMostUsedTagsWithInvalidBlockSizeThrowsArgumentOutOfRangeException()
+        {
+            ExpectException<ArgumentOutOfRangeException>(() =>
+                tagService.GetMostUsedTags(10, 0, 0));
+        }
+
+        [TestMethod]
+        public void GetMostUsedTagsRespectsMaximumTags()
+        {
+            tagDao.Create(new Tag { tagName = UniqueName("limit_a") });
+            tagDao.Create(new Tag { tagName = UniqueName("limit_b") });
+
+            Block<Tag> first = tagService.GetMostUsedTags(1, 0, 1);
+            Block<Tag> second = tagService.GetMostUsedTags(1, 1, 1);
+
+            Assert.AreEqual(1, first.Items.Count);
+            Assert.IsFalse(first.ExistsMoreItems);
+            Assert.AreEqual(0, second.Items.Count);
+            Assert.IsFalse(second.ExistsMoreItems);
         }
 
         private UserProfile CreateUser()

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Transactions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject;
-using PagedList;
 using Es.Udc.DotNet.ModelUtil.Exceptions;
 using Es.Udc.DotNet.PracticaMAD.Model;
 using Es.Udc.DotNet.PracticaMAD.Model.CategoryDao;
@@ -313,17 +312,17 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             long second = commentService.AddComment(author.usrId, product.productId, "Segundo", null);
             long third = commentService.AddComment(author.usrId, product.productId, "Tercero", null);
 
-            IPagedList<CommentVO> page1 = commentService.FindCommentsByProduct(product.productId, 1, 2);
-            IPagedList<CommentVO> page2 = commentService.FindCommentsByProduct(product.productId, 2, 2);
+            Block<CommentVO> page1 = commentService.FindCommentsByProduct(product.productId, 0, 2);
+            Block<CommentVO> page2 = commentService.FindCommentsByProduct(product.productId, 2, 2);
 
-            Assert.AreEqual(3, page1.TotalItemCount);
-            Assert.AreEqual(1, page1.PageNumber);
-            Assert.AreEqual(2, page1.Count);
-            Assert.AreEqual(third, page1[0].CommentId);
-            Assert.AreEqual(second, page1[1].CommentId);
-            Assert.AreEqual(1, page2.Count);
-            Assert.AreEqual(first, page2[0].CommentId);
-            Assert.AreEqual(author.loginName, page1[0].UserName);
+            Assert.AreEqual(2, page1.Items.Count);
+            Assert.IsTrue(page1.ExistsMoreItems);
+            Assert.AreEqual(third, page1.Items[0].CommentId);
+            Assert.AreEqual(second, page1.Items[1].CommentId);
+            Assert.AreEqual(1, page2.Items.Count);
+            Assert.IsFalse(page2.ExistsMoreItems);
+            Assert.AreEqual(first, page2.Items[0].CommentId);
+            Assert.AreEqual(author.loginName, page1.Items[0].UserName);
         }
 
         [TestMethod]
@@ -335,11 +334,12 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             long second = commentService.AddComment(author.usrId, anotherProduct.productId, "Dos", null);
             commentService.AddComment(anotherAuthor.usrId, product.productId, "Ajeno", null);
 
-            IPagedList<CommentVO> comments = commentService.FindCommentsByUser(author.usrId, 1, 10);
-            Assert.AreEqual(2, comments.TotalItemCount);
-            Assert.IsTrue(comments.Any(c => c.CommentId == first));
-            Assert.IsTrue(comments.Any(c => c.CommentId == second));
-            Assert.IsTrue(comments.All(c => c.UserId == author.usrId));
+            Block<CommentVO> comments = commentService.FindCommentsByUser(author.usrId, 0, 10);
+            Assert.AreEqual(2, comments.Items.Count);
+            Assert.IsFalse(comments.ExistsMoreItems);
+            Assert.IsTrue(comments.Items.Any(c => c.CommentId == first));
+            Assert.IsTrue(comments.Items.Any(c => c.CommentId == second));
+            Assert.IsTrue(comments.Items.All(c => c.UserId == author.usrId));
         }
 
         [TestMethod]
@@ -360,30 +360,39 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             long tagAId = tagDao.FindByName(tagA).tagId;
             long tagBId = tagDao.FindByName(tagB).tagId;
 
-            IPagedList<CommentVO> byA =
-                commentService.FindCommentsByTagId(tagAId, 1, 10);
+            Block<CommentVO> byA =
+                commentService.FindCommentsByTagId(tagAId, 0, 10);
 
-            IPagedList<CommentVO> byB =
-                commentService.FindCommentsByTagId(tagBId, 1, 10);
+            Block<CommentVO> byB =
+                commentService.FindCommentsByTagId(tagBId, 0, 10);
 
-            // La etiqueta A tiene dos comentarios
-            Assert.AreEqual(2, byA.TotalItemCount);
-            Assert.IsTrue(byA.Any(c => c.CommentId == both));
-            Assert.IsTrue(byA.Any(c => c.CommentId == onlyA));
-            Assert.IsFalse(byA.Any(c => c.CommentId == onlyB));
+            // La etiqueta A tiene dos comentarios.
+            Assert.AreEqual(2, byA.Items.Count);
+            Assert.IsFalse(byA.ExistsMoreItems);
+            Assert.IsTrue(byA.Items.Any(c => c.CommentId == both));
+            Assert.IsTrue(byA.Items.Any(c => c.CommentId == onlyA));
+            Assert.IsFalse(byA.Items.Any(c => c.CommentId == onlyB));
 
-            // La etiqueta B también tiene dos comentarios
-            Assert.AreEqual(2, byB.TotalItemCount);
-            Assert.IsTrue(byB.Any(c => c.CommentId == both));
-            Assert.IsTrue(byB.Any(c => c.CommentId == onlyB));
-            Assert.IsFalse(byB.Any(c => c.CommentId == onlyA));
+            // La etiqueta B también tiene dos comentarios.
+            Assert.AreEqual(2, byB.Items.Count);
+            Assert.IsFalse(byB.ExistsMoreItems);
+            Assert.IsTrue(byB.Items.Any(c => c.CommentId == both));
+            Assert.IsTrue(byB.Items.Any(c => c.CommentId == onlyB));
+            Assert.IsFalse(byB.Items.Any(c => c.CommentId == onlyA));
         }
 
         [TestMethod]
-        public void FindCommentsByProductWithInvalidPageThrowsArgumentOutOfRangeException()
+        public void FindCommentsByProductWithInvalidStartIndexThrowsArgumentOutOfRangeException()
         {
             ExpectException<ArgumentOutOfRangeException>(() =>
-                commentService.FindCommentsByProduct(product.productId, 0, 10));
+                commentService.FindCommentsByProduct(product.productId, -1, 10));
+        }
+
+        [TestMethod]
+        public void FindCommentsByProductWithInvalidCountThrowsArgumentOutOfRangeException()
+        {
+            ExpectException<ArgumentOutOfRangeException>(() =>
+                commentService.FindCommentsByProduct(product.productId, 0, 0));
         }
 
         [TestMethod]

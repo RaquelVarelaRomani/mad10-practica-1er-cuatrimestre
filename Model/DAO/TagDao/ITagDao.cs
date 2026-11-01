@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Es.Udc.DotNet.ModelUtil.Dao;
 using Es.Udc.DotNet.ModelUtil.Exceptions;
-using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
 {
@@ -31,12 +30,11 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.TagDao
         /// <summary>
         /// Obtiene las etiquetas mas utilizadas, ordenadas por frecuencia descendente y paginadas.
         /// </summary>
-        /// <param name="count">Numero maximo de etiquetas a considerar.</param>
-        /// <param name="page">Numero de pagina (empezando en 1).</param>
-        /// <param name="pageSize">Cantidad de etiquetas por pagina.</param>
-        /// <returns>Lista paginada de las etiquetas mas utilizadas.</returns>
+        /// <param name="startIndex">Posicion inicial, empezando en 0.</param>
+        /// <param name="count">Numero maximo de etiquetas que se devuelven.</param>
+        /// <returns>Lista de las etiquetas mas utilizadas.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException"/>
-        IPagedList<Tag> GetMostUsedTags(int count, int page, int pageSize);
+        List<Tag> GetMostUsedTags(int startIndex, int count);
     }
 }
 

@@ -3,32 +3,35 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Es.Udc.DotNet.ModelUtil.Dao;
-using PagedList;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.CommentDao
 {
     public class CommentDaoEntityFramework : GenericDaoEntityFramework<Comment, long>, ICommentDao
     {
-        public IPagedList<Comment> FindByProductId(long productId, int page, int pageSize)
+        public List<Comment> FindByProductId(long productId, int startIndex, int count)
         {
-            ValidatePaging(page, pageSize);
+            ValidatePaging(startIndex, count);
 
             return Context.Set<Comment>()
                 .Where(c => c.productId == productId)
                 .OrderByDescending(c => c.commentDate)
                 .ThenByDescending(c => c.commentId)
-                .ToPagedList(page, pageSize);
+                .Skip(startIndex)
+                .Take(count)
+                .ToList();
         }
 
-        public IPagedList<Comment> FindByUser(long userId, int page, int pageSize)
+        public List<Comment> FindByUser(long userId, int startIndex, int count)
         {
-            ValidatePaging(page, pageSize);
+            ValidatePaging(startIndex, count);
 
             return Context.Set<Comment>()
                 .Where(c => c.userId == userId)
                 .OrderByDescending(c => c.commentDate)
                 .ThenByDescending(c => c.commentId)
-                .ToPagedList(page, pageSize);
+                .Skip(startIndex)
+                .Take(count)
+                .ToList();
         }
 
         public int GetNumberOfCommentsByProduct(long productId)
@@ -36,15 +39,17 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.CommentDao
             return Context.Set<Comment>().Count(c => c.productId == productId);
         }
 
-        public IPagedList<Comment> FindByTagId(long tagId, int page, int pageSize)
+        public List<Comment> FindByTagId(long tagId, int startIndex, int count)
         {
-            ValidatePaging(page, pageSize);
+            ValidatePaging(startIndex, count);
 
             return Context.Set<Comment>()
                 .Where(c => c.Tags.Any(t => t.tagId == tagId))
                 .OrderByDescending(c => c.commentDate)
                 .ThenByDescending(c => c.commentId)
-                .ToPagedList(page, pageSize);
+                .Skip(startIndex)
+                .Take(count)
+                .ToList();
         }
 
         public int GetNumberOfCommentsByTag(long tagId)
@@ -82,13 +87,13 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.CommentDao
                   WHERE ct.[commentId] = @p0", commentId).ToList();
         }
 
-        private static void ValidatePaging(int page, int pageSize)
+        private static void ValidatePaging(int startIndex, int count)
         {
-            if (page < 1)
-                throw new ArgumentOutOfRangeException(nameof(page));
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
 
-            if (pageSize <= 0)
-                throw new ArgumentOutOfRangeException(nameof(pageSize));
+            if (count <= 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
         }
     }
 }
