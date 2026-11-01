@@ -1,11 +1,11 @@
-﻿using Es.Udc.DotNet.MiniPortal.Model.UserProfileDao;
-using Es.Udc.DotNet.MiniPortal.Model.UserService;
+﻿using Es.Udc.DotNet.PracticaMAD.Model.UserProfileDao;
+using Es.Udc.DotNet.PracticaMAD.Model.SERVICES;
 using Es.Udc.DotNet.ModelUtil.IoC;
 using Ninject;
 using System.Configuration;
 using System.Data.Entity;
 
-namespace Es.Udc.DotNet.MiniPortal.HTTP.Util.IoC
+namespace Es.Udc.DotNet.PracticaMAD.HTTP.Util.IoC
 {
     internal class IoCManagerNinject : IIoCManager
     {
@@ -27,7 +27,7 @@ namespace Es.Udc.DotNet.MiniPortal.HTTP.Util.IoC
 
             /* DbContext */
             string connectionString =
-                ConfigurationManager.ConnectionStrings["MiniPortalEntities"].ConnectionString;
+                ConfigurationManager.ConnectionStrings["PracticaMadEntities"].ConnectionString;
 
             kernel.Bind<DbContext>().
                 ToSelf().

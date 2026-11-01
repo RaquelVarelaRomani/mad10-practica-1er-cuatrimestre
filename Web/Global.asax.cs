@@ -1,11 +1,11 @@
-﻿using Es.Udc.DotNet.MiniPortal.HTTP.Util.IoC;
-using Es.Udc.DotNet.MiniPortal.Web.HTTP.Session;
+﻿using Es.Udc.DotNet.PracticaMAD.HTTP.Util.IoC;
+using Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session;
 using Es.Udc.DotNet.ModelUtil.IoC;
 using Es.Udc.DotNet.ModelUtil.Log;
 using Ninject;
 using System;
 
-namespace Es.Udc.DotNet.MiniPortal.Web
+namespace Es.Udc.DotNet.PracticaMAD.Web
 {
     public class Global : System.Web.HttpApplication
     {

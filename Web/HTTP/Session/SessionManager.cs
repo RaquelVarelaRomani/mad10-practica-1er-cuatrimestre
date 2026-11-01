@@ -1,14 +1,14 @@
-using Es.Udc.DotNet.MiniPortal.Model.UserService;
-using Es.Udc.DotNet.MiniPortal.Model.UserService.Exceptions;
-using Es.Udc.DotNet.MiniPortal.Web.HTTP.Util;
-using Es.Udc.DotNet.MiniPortal.Web.HTTP.View.ApplicationObjects;
+using Es.Udc.DotNet.PracticaMAD.Model.SERVICES;
+using Es.Udc.DotNet.PracticaMAD.Model.Exceptions;
+using Es.Udc.DotNet.PracticaMAD.Web.HTTP.Util;
+using Es.Udc.DotNet.PracticaMAD.Web.HTTP.View.ApplicationObjects;
 using Es.Udc.DotNet.ModelUtil.Exceptions;
 using Es.Udc.DotNet.ModelUtil.IoC;
 using System;
 using System.Web;
 using System.Web.Security;
 
-namespace Es.Udc.DotNet.MiniPortal.Web.HTTP.Session
+namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
 {
     ///<summary>
     ///
@@ -177,11 +177,13 @@ namespace Es.Udc.DotNet.MiniPortal.Web.HTTP.Session
             /* Insert necessary objects in the session. */
 
             UserSession userSession = new UserSession();
-            userSession.UserProfileId = loginResult.UserProfileId;
+            userSession.UserProfileId = loginResult.UsrId;
             userSession.FirstName = loginResult.FirstName;
 
-            Locale locale =
-                new Locale(loginResult.Language, loginResult.Country);
+            UserProfileDetails details =
+                userService.FindUserProfileDetails(loginResult.UsrId);
+
+            Locale locale = new Locale(details.Language, details.Country);
 
             UpdateSessionForAuthenticatedUser(context, userSession, locale);
 

@@ -1,4 +1,4 @@
-namespace Es.Udc.DotNet.MiniPortal.Web.HTTP.View.ApplicationObjects
+namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.View.ApplicationObjects
 {
 
     public struct Locale
