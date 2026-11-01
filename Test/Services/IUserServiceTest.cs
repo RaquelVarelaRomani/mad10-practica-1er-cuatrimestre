@@ -8,8 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject;
 using System;
 using System.Transactions;
-using Es.Udc.DotNet.PracticaMaD.Model.SERVICES;
-using Es.Udc.DotNet.PracticaMaD.Model.SERVICES.Util;
+using Es.Udc.DotNet.PracticaMAD.Model.SERVICES.Util;
 
 namespace Es.Udc.DotNet.PracticaMAD.Test
 {
@@ -214,5 +213,95 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
                 );
             }
         }
+
+
+        [TestMethod]
+        public void FindUserProfileDetailsTest()
+        {
+            using (var scope = new TransactionScope())
+            {
+                long userId = registerUser();
+
+                UserProfileDetails details =
+                    userService.FindUserProfileDetails(userId);
+
+                Assert.AreEqual(firstName, details.FirstName);
+                Assert.AreEqual(lastName, details.LastName);
+                Assert.AreEqual(email, details.Email);
+                Assert.AreEqual(language, details.Language);
+                Assert.AreEqual(country, details.Country);
+            }
+        }
+
+
+        [TestMethod]
+        public void UpdateUserProfileDetailsTest()
+        {
+            using (var scope = new TransactionScope())
+            {
+                long userId = registerUser();
+
+                UserProfileDetails newDetails = new UserProfileDetails(
+                    "NuevoNombre",
+                    "NuevoApellido",
+                    "nuevo@udc.es",
+                    "gl",
+                    "ES"
+                );
+
+                userService.UpdateUserProfileDetails(userId, newDetails);
+
+                UserProfileDetails updatedDetails =
+                    userService.FindUserProfileDetails(userId);
+
+                Assert.AreEqual(newDetails, updatedDetails);
+
+                // Comprobar que el seudónimo no ha cambiado
+                UserProfile user = userProfileDao.Find(userId);
+                Assert.AreEqual(login, user.loginName);
+            }
+        }
+
+
+        [TestMethod]
+        public void ChangePasswordTest()
+        {
+            using (var scope = new TransactionScope())
+            {
+                long userId = registerUser();
+
+                string newPassword = "nuevaPassword123";
+
+                userService.ChangePassword(
+                    userId,
+                    password,
+                    newPassword
+                );
+
+                UserProfile user = userProfileDao.Find(userId);
+
+                // Comprobar que la nueva contraseña está cifrada
+                Assert.AreEqual(
+                    PasswordEncrypter.Crypt(newPassword),
+                    user.enPassword
+                );
+
+                // Comprobar que la contraseña ha cambiado
+                Assert.AreNotEqual(
+                    PasswordEncrypter.Crypt(password),
+                    user.enPassword
+                );
+
+                // Comprobar que permite iniciar sesión con la nueva
+                LoginResult result = userService.Login(
+                    login,
+                    newPassword,
+                    false
+                );
+
+                Assert.AreEqual(userId, result.UsrId);
+            }
+        }
+
     }
 }

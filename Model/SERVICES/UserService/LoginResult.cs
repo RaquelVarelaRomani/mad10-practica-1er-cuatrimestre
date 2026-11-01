@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Es.Udc.DotNet.PracticaMaD.Model.SERVICES
+namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 {
     [Serializable()]
     public class LoginResult

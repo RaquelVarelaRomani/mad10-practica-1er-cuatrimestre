@@ -1,15 +1,10 @@
 ﻿using Es.Udc.DotNet.ModelUtil.Exceptions;
 using Es.Udc.DotNet.ModelUtil.Transactions;
-using Es.Udc.DotNet.PracticaMaD.Model.SERVICES;
-using Es.Udc.DotNet.PracticaMaD.Model.SERVICES.Util;
+using Es.Udc.DotNet.PracticaMAD.Model.SERVICES.Util;
 using Es.Udc.DotNet.PracticaMAD.Model.Exceptions;
 using Es.Udc.DotNet.PracticaMAD.Model.UserProfileDao;
 using Ninject;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 {
@@ -75,6 +70,57 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 
                 return user.usrId;
             }
+        }
+
+        /// <exception cref="InstanceNotFoundException"/>
+        [Transactional]
+        public UserProfileDetails FindUserProfileDetails(long userId)
+        {
+            UserProfile user = UserProfileDao.Find(userId);
+
+            return new UserProfileDetails(
+                user.firstName,
+                user.lastName,
+                user.email,
+                user.language,
+                user.country
+            );
+        }
+
+        /// <exception cref="InstanceNotFoundException"/>
+        [Transactional]
+        public void UpdateUserProfileDetails(long userId,
+            UserProfileDetails details)
+        {
+            UserProfile user = UserProfileDao.Find(userId);
+
+            user.firstName = details.FirstName;
+            user.lastName = details.LastName;
+            user.email = details.Email;
+            user.language = details.Language;
+            user.country = details.Country;
+
+            UserProfileDao.Update(user);
+        }
+
+        /// <exception cref="InstanceNotFoundException"/>
+        /// <exception cref="IncorrectPasswordException"/>
+        [Transactional]
+        public void ChangePassword(long userId,
+            string oldPassword, string newPassword)
+        {
+            UserProfile user = UserProfileDao.Find(userId);
+
+            if (user.isExternal ||
+                !PasswordEncrypter.IsClearPasswordCorrect(
+                    oldPassword, user.enPassword))
+            {
+                throw new IncorrectPasswordException(user.loginName);
+            }
+
+            user.enPassword = PasswordEncrypter.Crypt(newPassword);
+
+            UserProfileDao.Update(user);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Es.Udc.DotNet.ModelUtil.Exceptions;
 using Es.Udc.DotNet.ModelUtil.Transactions;
-using Es.Udc.DotNet.PracticaMaD.Model.SERVICES;
 using Es.Udc.DotNet.PracticaMAD.Model.Exceptions;
 using Es.Udc.DotNet.PracticaMAD.Model.UserProfileDao;
 using Ninject;
@@ -13,24 +12,75 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         IUserProfileDao UserProfileDao { set; }
 
         /// <summary>
-        /// Registers the user.
+        /// Registra un nuevo usuario en la aplicación.
         /// </summary>
-        /// <param name="login">Name of the login.</param>
-        /// <param name="clearPassword">The clear password.</param>
-        /// <param name="details">The details.</param>
-        /// <exception cref="DuplicateInstanceException"/>
+        /// <param name="login">Seudónimo del usuario.</param>
+        /// <param name="clearPassword">Contraseña del usuario en texto plano.</param>
+        /// <param name="details">Datos del perfil del usuario.</param>
+        /// <returns>Identificador del usuario registrado.</returns>
+        /// <exception cref="DuplicateInstanceException">
+        /// Se lanza si ya existe un usuario con el mismo seudónimo.
+        /// </exception>
         [Transactional]
-        long RegisterUser(string login, string clearPassword, UserProfileDetails details);
+        long RegisterUser(string login, string clearPassword,
+            UserProfileDetails details);
 
         /// <summary>
-        /// Logins the specified login name.
+        /// Autentica a un usuario mediante su seudónimo y contraseña.
         /// </summary>
-        /// <param name="loginName">Name of the login.</param>
-        /// <param name="password">The password.</param>
-        /// <param name="passwordIsEncrypted">if set to <c>true</c> [password is encrypted].</param>
-        /// <exception cref="InstanceNotFoundException"/>
-        /// <exception cref="IncorrectPasswordException"/>
+        /// <param name="loginName">Seudónimo del usuario.</param>
+        /// <param name="password">Contraseña del usuario.</param>
+        /// <param name="passwordIsEncrypted">
+        /// Indica si la contraseña proporcionada está cifrada.
+        /// </param>
+        /// <returns>Resultado de la autenticación con los datos del usuario.</returns>
+        /// <exception cref="InstanceNotFoundException">
+        /// Se lanza si el usuario no existe.
+        /// </exception>
+        /// <exception cref="IncorrectPasswordException">
+        /// Se lanza si la contraseña proporcionada es incorrecta.
+        /// </exception>
         [Transactional]
-        LoginResult Login(string loginName, string password, bool passwordIsEncrypted);
+        LoginResult Login(string loginName, string password,
+            bool passwordIsEncrypted);
+
+        /// <summary>
+        /// Obtiene los datos del perfil de un usuario.
+        /// </summary>
+        /// <param name="userId">Identificador del usuario.</param>
+        /// <returns>Datos del perfil del usuario.</returns>
+        /// <exception cref="InstanceNotFoundException">
+        /// Se lanza si el usuario no existe.
+        /// </exception>
+        [Transactional]
+        UserProfileDetails FindUserProfileDetails(long userId);
+
+        /// <summary>
+        /// Actualiza los datos del perfil de un usuario.
+        /// </summary>
+        /// <param name="userId">Identificador del usuario.</param>
+        /// <param name="details">Nuevos datos del perfil del usuario.</param>
+        /// <exception cref="InstanceNotFoundException">
+        /// Se lanza si el usuario no existe.
+        /// </exception>
+        [Transactional]
+        void UpdateUserProfileDetails(long userId,
+            UserProfileDetails details);
+
+        /// <summary>
+        /// Cambia la contraseña de un usuario.
+        /// </summary>
+        /// <param name="userId">Identificador del usuario.</param>
+        /// <param name="oldPassword">Contraseña actual del usuario.</param>
+        /// <param name="newPassword">Nueva contraseña del usuario.</param>
+        /// <exception cref="InstanceNotFoundException">
+        /// Se lanza si el usuario no existe.
+        /// </exception>
+        /// <exception cref="IncorrectPasswordException">
+        /// Se lanza si la contraseña actual es incorrecta.
+        /// </exception>
+        [Transactional]
+        void ChangePassword(long userId,
+            string oldPassword, string newPassword);
     }
 }

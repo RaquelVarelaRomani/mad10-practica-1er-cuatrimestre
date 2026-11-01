@@ -3,7 +3,7 @@ using System.Text;
 using System.Security.Cryptography;
 
 
-namespace Es.Udc.DotNet.PracticaMaD.Model.SERVICES.Util
+namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES.Util
 {
 
     /// <summary>
