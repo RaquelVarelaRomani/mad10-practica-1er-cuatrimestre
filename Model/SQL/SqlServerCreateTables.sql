@@ -196,15 +196,20 @@ GO
 /* ****************** INSERCION DE DATOS INICIALES ************************** */
 /* ************************************************************************** */
 
+
 /* 1. Usuarios iniciales (vendedores y compradores) */
-/* Nota: Las contrasenas pueden generarse o actualizarse mediante PasswordEncrypter */
-INSERT INTO UserProfile (loginName, enPassword, firstName, lastName, email, language, country)
-VALUES 
-('vendedor1', 'passwordHash1', 'Carlos', 'Garcia Perez', 'carlos.vendedor@udc.es', 'es', 'ES'),
-('vendedor2', 'passwordHash2', 'Marta', 'Lopez Gomez', 'marta.vendedor@udc.es', 'es', 'ES'),
-('comprador1', 'passwordHash3', 'Ana', 'Rodriguez Silva', 'ana.comprador@udc.es', 'es', 'ES'),
-('comprador2', 'passwordHash4', 'David', 'Fernandez Vazquez', 'david.comprador@udc.es', 'en', 'US')
+/* Contraseña inicial de todos los usuarios: password */
+/* Hash SHA-256 codificado en Base64 */
+
+INSERT INTO UserProfile
+    (loginName, enPassword, firstName, lastName, email, language, country)
+VALUES
+('vendedor1', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', 'Carlos', 'Garcia Perez', 'carlos.vendedor@udc.es', 'es', 'ES'),
+('vendedor2', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', 'Marta', 'Lopez Gomez', 'marta.vendedor@udc.es', 'es', 'ES'),
+('comprador1', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', 'Ana', 'Rodriguez Silva', 'ana.comprador@udc.es', 'es', 'ES'),
+('comprador2', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', 'David', 'Fernandez Vazquez', 'david.comprador@udc.es', 'en', 'US')
 GO
+
 
 /* 2. Categorias del catalogo (sistema plano) */
 INSERT INTO Category (categoryName)
