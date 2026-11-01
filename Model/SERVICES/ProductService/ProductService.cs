@@ -55,6 +55,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
             foreach (Product product in products)
             {
                 productDetails.Add(new ProductVO(
+                    product.productId,
                     product.productName,
                     product.Category.categoryName,
                     product.creationDate,
