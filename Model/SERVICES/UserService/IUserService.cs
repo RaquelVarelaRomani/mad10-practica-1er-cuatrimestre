@@ -82,5 +82,20 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         [Transactional]
         void ChangePassword(long userId,
             string oldPassword, string newPassword);
+
+        /// <summary>
+        /// Registers an external user.
+        /// </summary>
+        /// <param name="login">Name of the login.</param>
+        /// <param name="details">The details.</param>
+        /// <exception cref="DuplicateInstanceException"/>
+        long RegisterExternalUser(string login, UserProfileDetails details);
+
+        /// <summary>
+        /// Logins the specified external login name.
+        /// </summary>
+        /// <param name="loginName">Name of the login.</param>
+        /// <exception cref="InstanceNotFoundException"/>
+        LoginResult LoginExternal(string loginName);
     }
 }

@@ -303,5 +303,83 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
             }
         }
 
+        private long registerExternalUser()
+        {
+            return userService.RegisterExternalUser(
+                email,
+                new UserProfileDetails(firstName, lastName, email, language, country)
+            );
+        }
+
+        [TestMethod]
+        public void RegisterExternalUserTest()
+        {
+            using (var scope = new TransactionScope())
+            {
+                long userId = registerExternalUser();
+
+                UserProfile user = userProfileDao.Find(userId);
+
+                Assert.AreEqual(userId, user.usrId);
+                Assert.AreEqual(email, user.loginName);
+                Assert.AreEqual("", user.enPassword);
+                Assert.AreEqual(firstName, user.firstName);
+                Assert.AreEqual(lastName, user.lastName);
+                Assert.AreEqual(email, user.email);
+                Assert.AreEqual(language, user.language);
+                Assert.AreEqual(country, user.country);
+                Assert.IsTrue(user.isExternal);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DuplicateInstanceException))]
+        public void RegisterDuplicatedExternalUserTest()
+        {
+            using (var scope = new TransactionScope())
+            {
+                registerExternalUser();
+                registerExternalUser();
+            }
+        }
+
+        [TestMethod]
+        public void LoginExternalTest()
+        {
+            using (var scope = new TransactionScope())
+            {
+                long userId = registerExternalUser();
+
+                var expected =
+                    new LoginResult(userId, firstName, null);
+
+                var actual = userService.LoginExternal(email);
+
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InstanceNotFoundException))]
+        public void LoginExternalNonExternalUserTest()
+        {
+            using (var scope = new TransactionScope())
+            {
+                registerUser(); // Usuario normal
+
+                userService.LoginExternal(login);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InstanceNotFoundException))]
+        public void LoginExternalNonExistingUserTest()
+        {
+            using (var scope = new TransactionScope())
+            {
+                userService.LoginExternal("noexiste@google.com");
+            }
+        }
+
     }
 }

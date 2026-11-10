@@ -122,5 +122,46 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
 
             UserProfileDao.Update(user);
         }
+
+        [Transactional]
+        public long RegisterExternalUser(string login, UserProfileDetails details)
+        {
+            try
+            {
+                UserProfileDao.FindByLoginName(login);
+
+                throw new DuplicateInstanceException(login, typeof(UserProfile).FullName);
+            }
+            catch (InstanceNotFoundException)
+            {
+                UserProfile user = new UserProfile();
+
+                user.loginName = login;
+                user.enPassword = "";
+                user.firstName = details.FirstName;
+                user.lastName = details.LastName;
+                user.email = details.Email;
+                user.language = details.Language;
+                user.country = details.Country;
+                user.isExternal = true;
+
+                UserProfileDao.Create(user);
+
+                return user.usrId;
+            }
+        }
+
+        [Transactional]
+        public LoginResult LoginExternal(string loginName)
+        {
+            UserProfile user = UserProfileDao.FindByLoginName(loginName);
+
+            if (!user.isExternal)
+            {
+                throw new InstanceNotFoundException(loginName, typeof(UserProfile).FullName);
+            }
+
+            return new LoginResult(user.usrId, user.firstName, null);
+        }
     }
 }
