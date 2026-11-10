@@ -27,7 +27,7 @@ namespace Es.Udc.DotNet.PracticaMAD.HTTP.Util.IoC
 
             /* DbContext */
             string connectionString =
-                ConfigurationManager.ConnectionStrings["PracticaMadEntities"].ConnectionString;
+                ConfigurationManager.ConnectionStrings["PracticaMADEntities"].ConnectionString;
 
             kernel.Bind<DbContext>().
                 ToSelf().
