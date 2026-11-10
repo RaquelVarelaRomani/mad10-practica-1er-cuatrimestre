@@ -1,5 +1,6 @@
 ﻿using Es.Udc.DotNet.PracticaMAD.Model.UserProfileDao;
 using Es.Udc.DotNet.PracticaMAD.Model.SERVICES;
+using Es.Udc.DotNet.PracticaMAD.Model;
 using Es.Udc.DotNet.ModelUtil.IoC;
 using Ninject;
 using System.Configuration;
@@ -27,10 +28,10 @@ namespace Es.Udc.DotNet.PracticaMAD.HTTP.Util.IoC
 
             /* DbContext */
             string connectionString =
-                ConfigurationManager.ConnectionStrings["PracticaMADEntities"].ConnectionString;
+                ConfigurationManager.ConnectionStrings["PracticaMADModelEntities"].ConnectionString;
 
             kernel.Bind<DbContext>().
-                ToSelf().
+                To<PracticaMADModelEntities>().
                 InSingletonScope().
                 WithConstructorArgument("nameOrConnectionString", connectionString);
         }
