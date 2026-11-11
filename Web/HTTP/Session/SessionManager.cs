@@ -318,6 +318,9 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
 
             /* Remove cookies. */
             CookiesManager.RemoveCookies(context);
+
+            // Keep the current session while clearing the persistent authentication ticket.
+            AuthenticateUser(context, context.User.Identity.Name, false);
         }
 
         /// <summary>

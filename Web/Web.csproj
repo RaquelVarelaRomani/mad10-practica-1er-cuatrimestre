@@ -112,6 +112,8 @@
     <Content Include="Pages\User\App_LocalResources\Login.aspx.resx" />
     <Content Include="Pages\User\Register.aspx" />
     <Content Include="Pages\User\UpdateProfile.aspx" />
+    <Content Include="Pages\User\ChangePassword.aspx" />
+    <Content Include="Pages\User\App_LocalResources\ChangePassword.aspx.resx" />
     <Content Include="Pages\User\App_LocalResources\UpdateProfile.aspx.resx" />
     <Content Include="Pages\User\App_LocalResources\Register.aspx.resx" />
     <Content Include="Site.Master" />
@@ -176,6 +178,13 @@
     </Compile>
     <Compile Include="Pages\User\UpdateProfile.aspx.designer.cs">
       <DependentUpon>UpdateProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\User\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\User\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

@@ -33,5 +33,6 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.Pages.User
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCountry;
         protected global::System.Web.UI.WebControls.Button btnUpdate;
         protected global::System.Web.UI.WebControls.HyperLink lnkCancel;
+        protected global::System.Web.UI.WebControls.HyperLink lnkChangePassword;
     }
 }

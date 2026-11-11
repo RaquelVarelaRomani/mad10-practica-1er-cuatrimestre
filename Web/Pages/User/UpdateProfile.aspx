@@ -83,6 +83,10 @@
                             NavigateUrl="~/Pages/MainPage.aspx" meta:resourcekey="lnkCancel" />
                     </div>
                 </asp:Panel>
+                <p class="mt-4 mb-0">
+                    <asp:HyperLink ID="lnkChangePassword" runat="server" NavigateUrl="~/Pages/User/ChangePassword.aspx"
+                        meta:resourcekey="lnkChangePassword" />
+                </p>
             </div>
         </div>
     </div>

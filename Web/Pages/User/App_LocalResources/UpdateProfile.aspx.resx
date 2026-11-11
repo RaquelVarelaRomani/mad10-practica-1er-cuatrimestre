@@ -23,4 +23,5 @@
   <data name="rfvCountry.ErrorMessage" xml:space="preserve"><value>Selecciona un país.</value></data>
   <data name="btnUpdate.Text" xml:space="preserve"><value>Guardar cambios</value></data>
   <data name="lnkCancel.Text" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="lnkChangePassword.Text" xml:space="preserve"><value>Cambiar contraseña</value></data>
 </root>
