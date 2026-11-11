@@ -10,6 +10,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web
     {
         protected global::System.Web.UI.HtmlControls.HtmlForm siteForm;
         protected global::System.Web.UI.WebControls.HyperLink lnkHome;
+        protected global::System.Web.UI.WebControls.HyperLink lnkFindProducts;
         protected global::System.Web.UI.WebControls.PlaceHolder anonymousLinks;
         protected global::System.Web.UI.WebControls.HyperLink lnkLogin;
         protected global::System.Web.UI.WebControls.HyperLink lnkRegister;

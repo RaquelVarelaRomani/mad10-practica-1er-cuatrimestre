@@ -5,6 +5,8 @@ using Es.Udc.DotNet.ModelUtil.IoC;
 using Ninject;
 using System.Configuration;
 using System.Data.Entity;
+using Es.Udc.DotNet.PracticaMAD.Model.Cache;
+using Es.Udc.DotNet.PracticaMAD.Model.ProductDao;
 
 namespace Es.Udc.DotNet.PracticaMAD.HTTP.Util.IoC
 {
@@ -25,6 +27,10 @@ namespace Es.Udc.DotNet.PracticaMAD.HTTP.Util.IoC
             /* UserService */
             kernel.Bind<IUserService>().
                 To<UserService>();
+
+            kernel.Bind<IProductDao>().To<ProductDaoEntityFramework>();
+            kernel.Bind<IProductService>().To<ProductService>();
+            kernel.Bind<ISearchCache>().To<SearchCache>().InSingletonScope();
 
             /* DbContext */
             string connectionString =

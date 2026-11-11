@@ -20,6 +20,8 @@
                     <asp:HyperLink ID="lnkHome" runat="server" CssClass="navbar-brand fw-bold"
                         NavigateUrl="~/Pages/MainPage.aspx" meta:resourcekey="lnkHome" />
                     <div class="d-flex flex-wrap align-items-center gap-3">
+                        <asp:HyperLink ID="lnkFindProducts" runat="server" NavigateUrl="~/Pages/Product/FindProducts.aspx"
+                            meta:resourcekey="lnkFindProducts" />
                         <asp:PlaceHolder ID="anonymousLinks" runat="server">
                             <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="~/Pages/User/Login.aspx" meta:resourcekey="lnkLogin" />
                             <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="~/Pages/User/Register.aspx" meta:resourcekey="lnkRegister" />

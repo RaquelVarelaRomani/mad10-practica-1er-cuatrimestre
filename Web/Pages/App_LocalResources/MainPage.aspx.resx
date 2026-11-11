@@ -5,7 +5,8 @@
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <data name="PageResource.Title" xml:space="preserve"><value>Inicio</value></data>
+  <data name="lnkFindProducts.Text" xml:space="preserve"><value>Buscar productos</value></data>
   <data name="lclTitle.Text" xml:space="preserve"><value>Bienvenido a Práctica MaD</value></data>
-  <data name="lclAnonymous.Text" xml:space="preserve"><value>Inicia sesión o crea una cuenta para continuar.</value></data>
+  <data name="lclAnonymous.Text" xml:space="preserve"><value>Busca productos del catálogo. Inicia sesión para gestionar tu cuenta.</value></data>
   <data name="lclAuthenticated.Text" xml:space="preserve"><value>Has iniciado sesión correctamente.</value></data>
 </root>

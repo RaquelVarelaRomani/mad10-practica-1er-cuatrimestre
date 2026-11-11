@@ -15,6 +15,8 @@
                         <p class="mb-0" role="status"><asp:Localize ID="lclAuthenticated" runat="server" meta:resourcekey="lclAuthenticated" /></p>
                     </LoggedInTemplate>
                 </asp:LoginView>
+                <asp:HyperLink ID="lnkFindProducts" runat="server" NavigateUrl="~/Pages/Product/FindProducts.aspx"
+                    CssClass="btn btn-primary mt-3" meta:resourcekey="lnkFindProducts" />
             </div>
         </div>
     </div>

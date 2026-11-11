@@ -174,3 +174,7 @@ body.bootstrap-layout {
 .remember-password input {
     margin-right: 0.5rem;
 }
+
+.catalog-keyword {
+    max-width: 32rem;
+}

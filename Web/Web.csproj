@@ -107,6 +107,8 @@
     <Content Include="Default.aspx" />
     <Content Include="App_LocalResources\Site.Master.resx" />
     <Content Include="Pages\MainPage.aspx" />
+    <Content Include="Pages\Product\FindProducts.aspx" />
+    <Content Include="Pages\Product\App_LocalResources\FindProducts.aspx.resx" />
     <Content Include="Pages\App_LocalResources\MainPage.aspx.resx" />
     <Content Include="Pages\User\Login.aspx" />
     <Content Include="Pages\User\App_LocalResources\Login.aspx.resx" />
@@ -147,6 +149,11 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HTTP\Session\UserSession.cs" />
+    <Compile Include="Pages\Product\FindProducts.aspx.cs">
+      <DependentUpon>FindProducts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Product\FindProducts.aspx.designer.cs"><DependentUpon>FindProducts.aspx</DependentUpon></Compile>
     <Compile Include="HTTP\Util\CookiesManager.cs" />
     <Compile Include="HTTP\View\ApplicationObjects\Countries.cs" />
     <Compile Include="HTTP\View\ApplicationObjects\Languages.cs" />
