@@ -8,4 +8,5 @@
   <data name="lnkLogin.Text" xml:space="preserve"><value>Iniciar sesión</value></data>
   <data name="lnkRegister.Text" xml:space="preserve"><value>Registrarse</value></data>
   <data name="btnLogout.Text" xml:space="preserve"><value>Cerrar sesión</value></data>
+  <data name="lnkUpdateProfile.Text" xml:space="preserve"><value>Editar perfil</value></data>
 </root>

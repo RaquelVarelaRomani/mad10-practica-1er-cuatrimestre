@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="PageResource.Title" xml:space="preserve"><value>Editar perfil</value></data>
+  <data name="lclTitle.Text" xml:space="preserve"><value>Editar perfil</value></data>
+  <data name="lclUpdated.Text" xml:space="preserve"><value>Tu información de registro se ha actualizado correctamente.</value></data>
+  <data name="lclFirstname.Text" xml:space="preserve"><value>Nombre</value></data>
+  <data name="rfvFirstname.ErrorMessage" xml:space="preserve"><value>Introduce tu nombre.</value></data>
+  <data name="revFirstnameLength.ErrorMessage" xml:space="preserve"><value>El nombre no puede superar los 30 caracteres.</value></data>
+  <data name="lclSurname.Text" xml:space="preserve"><value>Apellidos</value></data>
+  <data name="rfvSurname.ErrorMessage" xml:space="preserve"><value>Introduce tus apellidos.</value></data>
+  <data name="revSurnameLength.ErrorMessage" xml:space="preserve"><value>Los apellidos no pueden superar los 40 caracteres.</value></data>
+  <data name="lclEmail.Text" xml:space="preserve"><value>Correo electrónico</value></data>
+  <data name="rfvEmail.ErrorMessage" xml:space="preserve"><value>Introduce tu correo electrónico.</value></data>
+  <data name="revEmail.ErrorMessage" xml:space="preserve"><value>Introduce un correo electrónico válido.</value></data>
+  <data name="revEmailLength.ErrorMessage" xml:space="preserve"><value>El correo electrónico no puede superar los 60 caracteres.</value></data>
+  <data name="lclLanguage.Text" xml:space="preserve"><value>Idioma</value></data>
+  <data name="rfvLanguage.ErrorMessage" xml:space="preserve"><value>Selecciona un idioma.</value></data>
+  <data name="lclCountry.Text" xml:space="preserve"><value>País</value></data>
+  <data name="rfvCountry.ErrorMessage" xml:space="preserve"><value>Selecciona un país.</value></data>
+  <data name="btnUpdate.Text" xml:space="preserve"><value>Guardar cambios</value></data>
+  <data name="lnkCancel.Text" xml:space="preserve"><value>Cancelar</value></data>
+</root>

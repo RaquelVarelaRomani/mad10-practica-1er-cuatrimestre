@@ -26,6 +26,8 @@
                         </asp:PlaceHolder>
                         <asp:PlaceHolder ID="authenticatedLinks" runat="server" Visible="false">
                             <span><asp:Literal ID="litFirstName" runat="server" Mode="Encode" /></span>
+                            <asp:HyperLink ID="lnkUpdateProfile" runat="server" NavigateUrl="~/Pages/User/UpdateProfile.aspx"
+                                meta:resourcekey="lnkUpdateProfile" />
                             <asp:LinkButton ID="btnLogout" runat="server" CausesValidation="false"
                                 OnClick="BtnLogoutClick" meta:resourcekey="btnLogout" />
                         </asp:PlaceHolder>

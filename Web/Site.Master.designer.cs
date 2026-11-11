@@ -15,6 +15,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web
         protected global::System.Web.UI.WebControls.HyperLink lnkRegister;
         protected global::System.Web.UI.WebControls.PlaceHolder authenticatedLinks;
         protected global::System.Web.UI.WebControls.Literal litFirstName;
+        protected global::System.Web.UI.WebControls.HyperLink lnkUpdateProfile;
         protected global::System.Web.UI.WebControls.LinkButton btnLogout;
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
     }
