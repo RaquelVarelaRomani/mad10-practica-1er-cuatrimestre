@@ -5,6 +5,7 @@ using Es.Udc.DotNet.PracticaMAD.Web.HTTP.View.ApplicationObjects;
 using Es.Udc.DotNet.ModelUtil.Exceptions;
 using Es.Udc.DotNet.ModelUtil.IoC;
 using System;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 
@@ -124,7 +125,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
 
             UpdateSessionForAuthenticatedUser(context, userSession, locale);
 
-            FormsAuthentication.SetAuthCookie(loginName, false);
+            AuthenticateUser(context, loginName, false);
         }
 
         /// <summary>
@@ -142,7 +143,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
             /* Try to login, and if successful, update session with the necessary
              * objects for an authenticated user. */
             LoginResult loginResult = DoLogin(context, loginName,
-                clearPassword, false, rememberMyPassword);
+                clearPassword, false);
 
             /* Add cookies if requested. */
             if (rememberMyPassword)
@@ -150,6 +151,25 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
                 CookiesManager.LeaveCookies(context, loginName,
                     loginResult.EncryptedPassword);
             }
+            else
+            {
+                CookiesManager.RemoveCookies(context);
+            }
+
+            AuthenticateUser(context, loginName, rememberMyPassword);
+        }
+
+        private static void AuthenticateUser(HttpContext context,
+            string loginName, bool rememberMyPassword)
+        {
+            HttpCookie cookie = FormsAuthentication.GetAuthCookie(
+                loginName, rememberMyPassword);
+
+            context.Response.Cookies.Add(cookie);
+
+            // Cookie restoration must also authenticate the current request.
+            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cookie.Value);
+            context.User = new GenericPrincipal(new FormsIdentity(ticket), new string[0]);
         }
 
         /// <summary>
@@ -162,13 +182,10 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
         /// <param name="password">User Password</param>
         /// <param name="passwordIsEncrypted">Password is either encrypted or
         /// in clear text</param>
-        /// <param name="rememberMyPassword">Remember password to the next
-        /// logins</param>
         /// <exception cref="IncorrectPasswordException"/>
         /// <exception cref="InstanceNotFoundException"/>
         private static LoginResult DoLogin(HttpContext context,
-             String loginName, String password, Boolean passwordIsEncrypted,
-             Boolean rememberMyPassword)
+             String loginName, String password, Boolean passwordIsEncrypted)
         {
             LoginResult loginResult =
                 userService.Login(loginName, password,
@@ -314,6 +331,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
             CookiesManager.RemoveCookies(context);
 
             /* Invalidate session. */
+            context.Session.Clear();
             context.Session.Abandon();
 
             /* Invalidate Authentication Ticket */
@@ -372,8 +390,12 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
             String loginName = CookiesManager.GetLoginName(context);
             String encryptedPassword = CookiesManager.GetEncryptedPassword(context);
 
-            if ((loginName == null) || (encryptedPassword == null))
+            if (String.IsNullOrEmpty(loginName) || String.IsNullOrEmpty(encryptedPassword))
             {
+                if (loginName != null || encryptedPassword != null)
+                {
+                    CookiesManager.RemoveCookies(context);
+                }
                 return;
             }
 
@@ -383,14 +405,20 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
              */
             try
             {
-                DoLogin(context, loginName, encryptedPassword, true, true);
+                DoLogin(context, loginName, encryptedPassword, true);
 
                 /* Authentication Ticket. */
-                FormsAuthentication.SetAuthCookie(loginName, true);
+                AuthenticateUser(context, loginName, true);
             }
-            catch (Exception)
-            { // Incorrect loginName or encryptedPassword
-                return;
+            catch (InstanceNotFoundException)
+            {
+                CookiesManager.RemoveCookies(context);
+                FormsAuthentication.SignOut();
+            }
+            catch (IncorrectPasswordException)
+            {
+                CookiesManager.RemoveCookies(context);
+                FormsAuthentication.SignOut();
             }
         }
     }

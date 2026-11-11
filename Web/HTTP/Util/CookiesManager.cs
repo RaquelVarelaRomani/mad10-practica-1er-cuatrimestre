@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Web;
 using System.Web.Security;
+using System.Security.Cryptography;
+using System.Text;
 
 
 namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Util
@@ -11,7 +13,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Util
         private const string ENCRYPTED_PASSWORD_COOKIE = "encryptedPassword";
 
         private const int REMEMBER_MY_PASSWORD_AGE = 30 * 24 * 3600;
-        private const int COOKIES_TIME_TO_LIVE_REMOVE = 0;
+        private const string PASSWORD_PROTECTION_PURPOSE = "PracticaMAD.RememberPassword";
 
         public static void LeaveCookies(HttpContext context, String loginName,
                 String encryptedPassword)
@@ -24,12 +26,17 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Util
 
             /* Create the encryptedPassword cookie. */
             HttpCookie encryptedPasswordCookie =
-                new HttpCookie(ENCRYPTED_PASSWORD_COOKIE, encryptedPassword);
+                new HttpCookie(ENCRYPTED_PASSWORD_COOKIE, Convert.ToBase64String(
+                    MachineKey.Protect(Encoding.UTF8.GetBytes(encryptedPassword),
+                        PASSWORD_PROTECTION_PURPOSE, loginName)));
 
 
             /* Set maximum age to cookies. */
             loginNameCookie.Expires = DateTime.Now.AddSeconds(timeToLive);
             encryptedPasswordCookie.Expires = DateTime.Now.AddSeconds(timeToLive);
+
+            ConfigureCookie(context, loginNameCookie);
+            ConfigureCookie(context, encryptedPasswordCookie);
 
             /* Add cookies to response (These values will be used in TouchSession method to create
                the authCookie when the session starts. */
@@ -40,8 +47,6 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Util
 
         public static void RemoveCookies(HttpContext context)
         {
-            int timeToLive = COOKIES_TIME_TO_LIVE_REMOVE;
-
             /* Create the loginName cookie. */
             HttpCookie loginNameCookie =
                 new HttpCookie(LOGIN_NAME_COOKIE, "");
@@ -51,8 +56,11 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Util
                 new HttpCookie(ENCRYPTED_PASSWORD_COOKIE, "");
 
             /* Set maximum age to cookies. */
-            loginNameCookie.Expires = DateTime.Now.AddSeconds(timeToLive);
-            encryptedPasswordCookie.Expires = DateTime.Now.AddSeconds(timeToLive);
+            loginNameCookie.Expires = DateTime.UtcNow.AddDays(-1);
+            encryptedPasswordCookie.Expires = DateTime.UtcNow.AddDays(-1);
+
+            ConfigureCookie(context, loginNameCookie);
+            ConfigureCookie(context, encryptedPasswordCookie);
 
             /* Add cookies to response. */
             context.Response.Cookies.Add(loginNameCookie);
@@ -77,10 +85,38 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Util
             HttpCookie encryptedPasswordCookie =
                 context.Request.Cookies.Get(ENCRYPTED_PASSWORD_COOKIE);
 
-            if (encryptedPasswordCookie != null)
-                return encryptedPasswordCookie.Value;
-            else
+            string loginName = GetLoginName(context);
+
+            if (encryptedPasswordCookie == null || String.IsNullOrEmpty(loginName))
+            {
                 return null;
+            }
+
+            try
+            {
+                byte[] password = MachineKey.Unprotect(
+                    Convert.FromBase64String(encryptedPasswordCookie.Value),
+                    PASSWORD_PROTECTION_PURPOSE, loginName);
+
+                return password == null ? null : Encoding.UTF8.GetString(password);
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
+            catch (CryptographicException)
+            {
+                return null;
+            }
+        }
+
+        private static void ConfigureCookie(HttpContext context, HttpCookie cookie)
+        {
+            cookie.HttpOnly = true;
+            cookie.Secure = context.Request.IsSecureConnection;
+            cookie.SameSite = SameSiteMode.Lax;
+            cookie.Path = String.IsNullOrEmpty(context.Request.ApplicationPath)
+                ? "/" : context.Request.ApplicationPath;
         }
 
     }

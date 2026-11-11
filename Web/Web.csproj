@@ -104,6 +104,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Css\styles.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="App_LocalResources\Site.Master.resx" />
+    <Content Include="Pages\MainPage.aspx" />
+    <Content Include="Pages\App_LocalResources\MainPage.aspx.resx" />
+    <Content Include="Pages\User\Login.aspx" />
+    <Content Include="Pages\User\App_LocalResources\Login.aspx.resx" />
     <Content Include="Pages\User\Register.aspx" />
     <Content Include="Pages\User\App_LocalResources\Register.aspx.resx" />
     <Content Include="Site.Master" />
@@ -144,6 +150,20 @@
     <Compile Include="Pages\User\Register.aspx.cs">
       <DependentUpon>Register.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\User\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\User\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
     </Compile>
     <Compile Include="Pages\User\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>

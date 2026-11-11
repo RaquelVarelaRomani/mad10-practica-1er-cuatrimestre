@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="PageResource.Title" xml:space="preserve"><value>Iniciar sesión</value></data>
+  <data name="lclTitle.Text" xml:space="preserve"><value>Iniciar sesión</value></data>
+  <data name="lclLogin.Text" xml:space="preserve"><value>Seudónimo</value></data>
+  <data name="rfvLogin.ErrorMessage" xml:space="preserve"><value>Introduce tu seudónimo.</value></data>
+  <data name="revLoginLength.ErrorMessage" xml:space="preserve"><value>El seudónimo no puede superar los 30 caracteres.</value></data>
+  <data name="lblLoginError.Text" xml:space="preserve"><value>No existe una cuenta con ese seudónimo.</value></data>
+  <data name="lclPassword.Text" xml:space="preserve"><value>Contraseña</value></data>
+  <data name="rfvPassword.ErrorMessage" xml:space="preserve"><value>Introduce tu contraseña.</value></data>
+  <data name="lblPasswordError.Text" xml:space="preserve"><value>La contraseña no es correcta.</value></data>
+  <data name="cbRememberPassword.Text" xml:space="preserve"><value>Recordar contraseña</value></data>
+  <data name="btnLogin.Text" xml:space="preserve"><value>Entrar</value></data>
+  <data name="lnkRegister.Text" xml:space="preserve"><value>¿No tienes cuenta? Regístrate</value></data>
+</root>

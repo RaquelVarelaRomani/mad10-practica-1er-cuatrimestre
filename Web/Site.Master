@@ -1,4 +1,5 @@
-<%@ Master Language="C#" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs"
+    Inherits="Es.Udc.DotNet.PracticaMAD.Web.SiteMaster" %>
 <!DOCTYPE html>
 <html lang="es">
 <head runat="server">
@@ -14,6 +15,23 @@
 <body class="bootstrap-layout">
     <div id="window">
         <form id="siteForm" runat="server">
+            <nav class="navbar bg-white border-bottom" aria-label="Navegación principal">
+                <div class="container flex-wrap gap-2">
+                    <asp:HyperLink ID="lnkHome" runat="server" CssClass="navbar-brand fw-bold"
+                        NavigateUrl="~/Pages/MainPage.aspx" meta:resourcekey="lnkHome" />
+                    <div class="d-flex flex-wrap align-items-center gap-3">
+                        <asp:PlaceHolder ID="anonymousLinks" runat="server">
+                            <asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="~/Pages/User/Login.aspx" meta:resourcekey="lnkLogin" />
+                            <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="~/Pages/User/Register.aspx" meta:resourcekey="lnkRegister" />
+                        </asp:PlaceHolder>
+                        <asp:PlaceHolder ID="authenticatedLinks" runat="server" Visible="false">
+                            <span><asp:Literal ID="litFirstName" runat="server" Mode="Encode" /></span>
+                            <asp:LinkButton ID="btnLogout" runat="server" CausesValidation="false"
+                                OnClick="BtnLogoutClick" meta:resourcekey="btnLogout" />
+                        </asp:PlaceHolder>
+                    </div>
+                </div>
+            </nav>
             <main id="content">
                 <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             </main>
