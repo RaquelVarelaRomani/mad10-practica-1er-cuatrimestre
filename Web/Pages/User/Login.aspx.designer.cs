@@ -21,6 +21,8 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.Pages.User
         protected global::System.Web.UI.WebControls.Label lblPasswordError;
         protected global::System.Web.UI.WebControls.CheckBox cbRememberPassword;
         protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::System.Web.UI.WebControls.Button btnGoogleLogin;
+        protected global::System.Web.UI.WebControls.Label lblGoogleError;
         protected global::System.Web.UI.WebControls.HyperLink lnkRegister;
     }
 }

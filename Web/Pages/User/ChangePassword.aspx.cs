@@ -53,6 +53,12 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.Pages.User
         {
             if (SessionManager.IsUserAuthenticated(Context))
             {
+                if (SessionManager.GetUserSession(Context).IsExternal)
+                {
+                    Response.Redirect(Response.ApplyAppPathModifier("~/Pages/User/UpdateProfile.aspx"), false);
+                    Context.ApplicationInstance.CompleteRequest();
+                    return false;
+                }
                 return true;
             }
 

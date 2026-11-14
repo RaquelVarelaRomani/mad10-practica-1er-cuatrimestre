@@ -13,12 +13,14 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         public string FirstName { get; private set; }
         public long UsrId { get; private set; }
         public bool IsAdmin { get; private set; }
+        public string LoginName { get; private set; }
 
-        public LoginResult(long usrId, string firstName, String encryptedPassword)
+        public LoginResult(long usrId, string firstName, String encryptedPassword, string loginName = null)
         {
             this.UsrId = usrId;
             this.FirstName = firstName;
             this.EncryptedPassword = encryptedPassword;
+            this.LoginName = loginName;
         }
 
         public override bool Equals(object obj)

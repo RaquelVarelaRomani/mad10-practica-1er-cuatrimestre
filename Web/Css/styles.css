@@ -157,6 +157,13 @@ body.bootstrap-layout {
     text-align: left;
 }
 
+.bootstrap-layout .navbar [aria-disabled="true"] {
+    color: var(--bs-secondary-color);
+    cursor: default;
+    pointer-events: none;
+    text-decoration: none;
+}
+
 .registration-shell {
     max-width: 48rem;
 }

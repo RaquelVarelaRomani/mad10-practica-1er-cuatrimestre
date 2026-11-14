@@ -7,6 +7,14 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.UserProfileDao
 {
     public class UserProfileDaoEntityFramework : GenericDaoEntityFramework<UserProfile, long>, IUserProfileDao
     {
+        public UserProfile FindByGoogleSubject(string subject)
+        {
+            UserProfile user = Context.Set<UserProfile>().FirstOrDefault(u => u.googleSubject == subject);
+            if (user == null)
+                throw new InstanceNotFoundException(subject, typeof(UserProfile).FullName);
+            return user;
+        }
+
         /// <summary>
         /// Busca un perfil de usuario a partir de su loginName.
         /// </summary>

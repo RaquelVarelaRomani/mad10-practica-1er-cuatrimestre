@@ -4,6 +4,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
 {
     public class UserSession
     {
+        public bool IsExternal { get; set; }
 
         private long userProfileId;
         private String firstName;

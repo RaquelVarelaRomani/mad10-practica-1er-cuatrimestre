@@ -48,6 +48,13 @@
                     </div>
                 </asp:Panel>
 
+                <div class="mt-3">
+                    <asp:Button ID="btnGoogleLogin" runat="server" CssClass="btn btn-outline-dark btn-lg w-100"
+                        CausesValidation="false" OnClick="BtnGoogleLoginClick" meta:resourcekey="btnGoogleLogin" />
+                    <asp:Label ID="lblGoogleError" runat="server" Visible="false"
+                        CssClass="text-danger small d-block mt-2" role="alert" />
+                </div>
+
                 <p class="text-center mt-4 mb-0">
                     <asp:HyperLink ID="lnkRegister" runat="server" NavigateUrl="~/Pages/User/Register.aspx"
                         meta:resourcekey="lnkRegister" />

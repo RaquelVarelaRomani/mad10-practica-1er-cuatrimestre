@@ -200,6 +200,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="SQL\SqlServerUpgradeGoogleOAuth.sql" />
     <EntityDeploy Include="PracticaMADModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PracticaMADModel.Designer.cs</LastGenOutput>

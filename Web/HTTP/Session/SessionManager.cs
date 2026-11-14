@@ -159,6 +159,24 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
             AuthenticateUser(context, loginName, rememberMyPassword);
         }
 
+        public static void LoginWithGoogle(HttpContext context, string subject, UserProfileDetails details)
+        {
+            LoginResult result = userService.LoginWithGoogle(subject, details);
+            CompleteExternalLogin(context, result);
+        }
+
+        private static void CompleteExternalLogin(HttpContext context, LoginResult result)
+        {
+            UserProfileDetails details = userService.FindUserProfileDetails(result.UsrId);
+            var userSession = new UserSession
+            {
+                UserProfileId = result.UsrId, FirstName = result.FirstName, IsExternal = true
+            };
+            UpdateSessionForAuthenticatedUser(context, userSession, new Locale(details.Language, details.Country));
+            CookiesManager.RemoveCookies(context);
+            AuthenticateUser(context, result.LoginName, false);
+        }
+
         private static void AuthenticateUser(HttpContext context,
             string loginName, bool rememberMyPassword)
         {
@@ -349,6 +367,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
         /// <param name="context">Http Context includes request, response, etc.</param>
         public static void TouchSession(HttpContext context)
         {
+            if (context.Session == null) return;
             /* Check if "UserSession" object is in the session. */
             UserSession userSession = null;
 
@@ -371,6 +390,14 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.HTTP.Session
              * as cookies). If so, we reconstruct user's session objects.
              */
             UpdateSessionFromCookies(context);
+
+            // Restore external sessions only from signed Forms Authentication tickets.
+            if (!IsUserAuthenticated(context) && context.User != null &&
+                context.User.Identity is FormsIdentity && context.User.Identity.IsAuthenticated)
+            {
+                try { CompleteExternalLogin(context, userService.LoginExternal(context.User.Identity.Name)); }
+                catch (InstanceNotFoundException) { FormsAuthentication.SignOut(); }
+            }
         }
 
         /// <summary>

@@ -14,6 +14,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web
 
             if (userSession != null)
             {
+                lnkChangePassword.Visible = !userSession.IsExternal;
                 litFirstName.Text = userSession.FirstName;
             }
         }

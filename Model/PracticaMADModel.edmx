@@ -85,6 +85,7 @@
           <Property Name="language" Type="varchar" MaxLength="2" Nullable="false" />
           <Property Name="country" Type="varchar" MaxLength="2" Nullable="false" />
           <Property Name="isExternal" Type="bit" Nullable="false" />
+            <Property Name="googleSubject" Type="varchar" MaxLength="255" />
         </EntityType>
         <Association Name="FK_Comment_Product">
           <End Role="Product" Type="Self.Product" Multiplicity="1">
@@ -376,6 +377,7 @@
           <NavigationProperty Name="SellerRatings" Relationship="Self.FK_SellerRating_Buyer" FromRole="UserProfile" ToRole="SellerRating" />
           <NavigationProperty Name="SellerRatings1" Relationship="Self.FK_SellerRating_Seller" FromRole="UserProfile" ToRole="SellerRating" />
           <Property Name="isExternal" Type="Boolean" Nullable="false" />
+            <Property Name="googleSubject" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_Product_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="1" />
@@ -619,6 +621,7 @@
             <EntityTypeMapping TypeName="Es.Udc.DotNet.PracticaMAD.Model.UserProfile">
               <MappingFragment StoreEntitySet="UserProfile">
                 <ScalarProperty Name="isExternal" ColumnName="isExternal" />
+                <ScalarProperty Name="googleSubject" ColumnName="googleSubject" />
                 <ScalarProperty Name="usrId" ColumnName="usrId" />
                 <ScalarProperty Name="loginName" ColumnName="loginName" />
                 <ScalarProperty Name="enPassword" ColumnName="enPassword" />

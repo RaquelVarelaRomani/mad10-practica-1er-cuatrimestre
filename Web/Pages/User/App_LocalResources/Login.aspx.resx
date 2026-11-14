@@ -16,4 +16,9 @@
   <data name="cbRememberPassword.Text" xml:space="preserve"><value>Recordar contraseña</value></data>
   <data name="btnLogin.Text" xml:space="preserve"><value>Entrar</value></data>
   <data name="lnkRegister.Text" xml:space="preserve"><value>¿No tienes cuenta? Regístrate</value></data>
+  <data name="btnGoogleLogin.Text" xml:space="preserve"><value>Continuar con Google</value></data>
+  <data name="GoogleError.cancelled" xml:space="preserve"><value>Has cancelado el acceso con Google. Puedes volver a intentarlo.</value></data>
+  <data name="GoogleError.expired" xml:space="preserve"><value>La solicitud de acceso con Google ha caducado o no es válida. Vuelve a intentarlo.</value></data>
+  <data name="GoogleError.failed" xml:space="preserve"><value>No se ha podido iniciar sesión con Google. Vuelve a intentarlo.</value></data>
+  <data name="GoogleError.unavailable" xml:space="preserve"><value>El acceso con Google no está disponible en este momento.</value></data>
 </root>

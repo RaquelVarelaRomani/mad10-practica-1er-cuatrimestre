@@ -16,6 +16,7 @@ namespace Es.Udc.DotNet.PracticaMAD.Web.Pages.User
                 return;
             }
 
+            lnkChangePassword.Visible = !SessionManager.GetUserSession(Context).IsExternal;
             pnlUpdated.Visible = !IsPostBack && Request.QueryString["updated"] == "1";
 
             if (!IsPostBack)

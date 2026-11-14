@@ -26,6 +26,15 @@ GO
 USE [PracticaMAD_test]
 GO
 
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_PADDING ON;
+SET ANSI_WARNINGS ON;
+SET ARITHABORT ON;
+SET CONCAT_NULL_YIELDS_NULL ON;
+SET NUMERIC_ROUNDABORT OFF;
+GO
+
 /* ********** Drop tables in reverse dependency order *********** */
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[CommentTag]') AND type in ('U'))
@@ -73,10 +82,15 @@ CREATE TABLE UserProfile (
 	language varchar(2) NOT NULL,
 	country varchar(2) NOT NULL,
 	isExternal BIT NOT NULL DEFAULT 0,
+	googleSubject varchar(255) COLLATE Latin1_General_100_BIN2 NULL,
 
 	CONSTRAINT [PK_UserProfile] PRIMARY KEY (usrId),
 	CONSTRAINT [UQ_UserProfile_LoginName] UNIQUE (loginName)
 )
+GO
+
+CREATE UNIQUE INDEX [UQ_UserProfile_GoogleSubject]
+ON [UserProfile] ([googleSubject]) WHERE [googleSubject] IS NOT NULL
 GO
 
 CREATE NONCLUSTERED INDEX [IX_UserProfile_LoginName]

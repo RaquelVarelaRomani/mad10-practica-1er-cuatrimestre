@@ -83,6 +83,9 @@
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="Google.Apis.Auth"><HintPath>..\packages\Google.Apis.Auth.1.77.0\lib\net462\Google.Apis.Auth.dll</HintPath></Reference>
+    <Reference Include="Google.Apis.Core"><HintPath>..\packages\Google.Apis.Core.1.77.0\lib\net462\Google.Apis.Core.dll</HintPath></Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -112,6 +115,7 @@
     <Compile Include="Services\IProductServiceTest.cs" />
     <Compile Include="Services\ISellerServiceTest.cs" />
     <Compile Include="Services\IUserServiceTest.cs" />
+    <Compile Include="Services\GoogleOAuthTest.cs" />
     <Compile Include="Services\ITagServiceTest.cs" />
     <Compile Include="TestManager.cs" />
     <Compile Include="Daos\DaoIntegrationTest.cs" />
@@ -130,6 +134,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{400c9e1c-a244-4aeb-996a-0491a306249a}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web\Web.csproj">
+      <Project>{8F3E98D6-99FD-47E9-8FC1-1065A59713B1}</Project>
+      <Name>Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

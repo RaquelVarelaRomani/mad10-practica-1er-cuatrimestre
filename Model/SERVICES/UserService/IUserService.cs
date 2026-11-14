@@ -97,5 +97,12 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
         /// <param name="loginName">Name of the login.</param>
         /// <exception cref="InstanceNotFoundException"/>
         LoginResult LoginExternal(string loginName);
+
+        /// <summary>
+        /// Signs in or creates a Google account using a subject verified by the web layer.
+        /// Accounts are never linked by email or by a user-supplied login name.
+        /// </summary>
+        [Transactional]
+        LoginResult LoginWithGoogle(string subject, UserProfileDetails details);
     }
 }

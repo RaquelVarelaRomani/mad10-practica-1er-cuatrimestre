@@ -161,7 +161,36 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.SERVICES
                 throw new InstanceNotFoundException(loginName, typeof(UserProfile).FullName);
             }
 
-            return new LoginResult(user.usrId, user.firstName, null);
+            return new LoginResult(user.usrId, user.firstName, null, user.loginName);
+        }
+
+        [Transactional]
+        public LoginResult LoginWithGoogle(string subject, UserProfileDetails details)
+        {
+            if (string.IsNullOrWhiteSpace(subject) || subject.Length > 255)
+                throw new ArgumentException("Google subject is required and must fit in 255 characters.", "subject");
+
+            UserProfile user;
+            try
+            {
+                user = UserProfileDao.FindByGoogleSubject(subject);
+            }
+            catch (InstanceNotFoundException)
+            {
+                // Keep the login name within the existing 30-character schema.
+                user = new UserProfile
+                {
+                    loginName = "google_" + Guid.NewGuid().ToString("N").Substring(0, 23),
+                    googleSubject = subject, enPassword = "", isExternal = true,
+                    firstName = details.FirstName, lastName = details.LastName,
+                    email = details.Email, language = details.Language, country = details.Country
+                };
+                UserProfileDao.Create(user);
+            }
+
+            if (!user.isExternal)
+                throw new InstanceNotFoundException(subject, typeof(UserProfile).FullName);
+            return new LoginResult(user.usrId, user.firstName, null, user.loginName);
         }
     }
 }

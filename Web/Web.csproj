@@ -19,8 +19,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkProfile />
-    <UseIISExpress>false</UseIISExpress>
-    <IISExpressSSLPort />
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort>44382</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -86,6 +86,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="Google.Apis"><HintPath>..\packages\Google.Apis.1.77.0\lib\net462\Google.Apis.dll</HintPath></Reference>
+    <Reference Include="Google.Apis.Auth"><HintPath>..\packages\Google.Apis.Auth.1.77.0\lib\net462\Google.Apis.Auth.dll</HintPath></Reference>
+    <Reference Include="Google.Apis.Core"><HintPath>..\packages\Google.Apis.Core.1.77.0\lib\net462\Google.Apis.Core.dll</HintPath></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath></Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Management" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -107,6 +113,8 @@
     <Content Include="Default.aspx" />
     <Content Include="App_LocalResources\Site.Master.resx" />
     <Content Include="Pages\MainPage.aspx" />
+    <Content Include="Pages\User\GoogleCallback.aspx" />
+    <None Include="OAuth.local.config.example" />
     <Content Include="Pages\Product\FindProducts.aspx" />
     <Content Include="Pages\Product\App_LocalResources\FindProducts.aspx.resx" />
     <Content Include="Pages\App_LocalResources\MainPage.aspx.resx" />
@@ -149,6 +157,16 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HTTP\Session\UserSession.cs" />
+    <Compile Include="HTTP\Security\GoogleOAuthConfiguration.cs" />
+    <Compile Include="HTTP\Security\GoogleLoginState.cs" />
+    <Compile Include="HTTP\Security\GoogleOAuthClient.cs" />
+    <Compile Include="Pages\User\GoogleCallback.aspx.cs">
+      <DependentUpon>GoogleCallback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\User\GoogleCallback.aspx.designer.cs">
+      <DependentUpon>GoogleCallback.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Product\FindProducts.aspx.cs">
       <DependentUpon>FindProducts.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -258,12 +276,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8082</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>https://localhost:44382/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -12,6 +12,10 @@ namespace Es.Udc.DotNet.PracticaMAD.Model.UserProfileDao
         /// <returns>El perfil de usuario correspondiente.</returns>
         /// <exception cref="InstanceNotFoundException"/>
         UserProfile FindByLoginName(string loginName);
+
+        /// <summary>Finds the external account by Google's stable subject identifier.</summary>
+        /// <exception cref="InstanceNotFoundException"/>
+        UserProfile FindByGoogleSubject(string subject);
     }
 }
 

@@ -312,6 +312,80 @@ namespace Es.Udc.DotNet.PracticaMAD.Test
         }
 
         [TestMethod]
+        public void GoogleLoginCreatesAnExternalAccountWithStableSubject()
+        {
+            using (var scope = new TransactionScope())
+            {
+                const string subject = "123456789012345678901";
+                var details = new UserProfileDetails(firstName, lastName,
+                    "a.long.email.address.for.google@example.com", language, country);
+                LoginResult result = userService.LoginWithGoogle(subject, details);
+                UserProfile user = userProfileDao.FindByGoogleSubject(subject);
+                Assert.AreEqual(result.UsrId, user.usrId);
+                Assert.AreEqual(subject, user.googleSubject);
+                Assert.IsTrue(user.isExternal);
+                Assert.AreEqual("", user.enPassword);
+                Assert.AreEqual(30, user.loginName.Length);
+                Assert.AreEqual(user.loginName, result.LoginName);
+                Assert.AreEqual(details.Email, user.email);
+            }
+        }
+
+        [TestMethod]
+        public void RepeatedGoogleLoginUsesSubjectAndKeepsEditedProfile()
+        {
+            using (var scope = new TransactionScope())
+            {
+                var details = new UserProfileDetails(firstName, lastName, email, language, country);
+                LoginResult first = userService.LoginWithGoogle("google-subject", details);
+                var edited = new UserProfileDetails("Nombre editado", lastName, "edited@example.com", "gl", country);
+                userService.UpdateUserProfileDetails(first.UsrId, edited);
+                LoginResult second = userService.LoginWithGoogle("google-subject", details);
+                Assert.AreEqual(first.UsrId, second.UsrId);
+                Assert.AreEqual(edited, userService.FindUserProfileDetails(second.UsrId));
+            }
+        }
+
+        [TestMethod]
+        public void GoogleLoginDoesNotLinkLocalOrOtherGoogleAccountsByEmail()
+        {
+            using (var scope = new TransactionScope())
+            {
+                long localId = registerUser();
+                var details = new UserProfileDetails(firstName, lastName, email, language, country);
+                var first = userService.LoginWithGoogle("first-google-subject", details);
+                var second = userService.LoginWithGoogle("second-google-subject", details);
+                Assert.AreNotEqual(localId, first.UsrId);
+                Assert.AreNotEqual(first.UsrId, second.UsrId);
+                Assert.AreEqual(localId, userService.Login(login, password, false).UsrId);
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(IncorrectPasswordException))]
+        public void GoogleAccountCannotChangeALocalPassword()
+        {
+            using (var scope = new TransactionScope())
+            {
+                var details = new UserProfileDetails(firstName, lastName, email, language, country);
+                var result = userService.LoginWithGoogle("google-subject", details);
+                userService.ChangePassword(result.UsrId, "", "new-password");
+            }
+        }
+
+        [TestMethod]
+        public void GoogleSubjectsAreCaseSensitive()
+        {
+            using (var scope = new TransactionScope())
+            {
+                var details = new UserProfileDetails(firstName, lastName, email, language, country);
+                var first = userService.LoginWithGoogle("subject-A", details);
+                var second = userService.LoginWithGoogle("subject-a", details);
+                Assert.AreNotEqual(first.UsrId, second.UsrId);
+            }
+        }
+
+        [TestMethod]
         public void RegisterExternalUserTest()
         {
             using (var scope = new TransactionScope())
